@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>Рулетка свидания</title>
+
+  <link rel="stylesheet" href="style.css"/>
+
+  <!-- Telegram WebApp SDK (один раз) -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <!-- GSAP -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+  <!-- confetti (опционально) -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <!-- app.js ПОСЛЕ либ -->
+  <script defer src="app.js"></script>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <div class="logo">🎡</div>
+      <div class="title">
+        <div class="h1">Казино</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="card wheel-card">
+      <div class="reel-wrap">
+        <div class="marker" aria-hidden="true"></div>
+
+        <div class="viewport" id="viewport">
+          <div class="reel" id="reel"></div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="row">
+          <input id="password" class="input" type="password" placeholder="Пароль" autocomplete="off" />
+          <button id="spin" class="btn btn-primary">Крутить</button>
+        </div>
+
+        <div class="status" id="status"></div>
+      </div>
+    </section>
+
+    <section class="card result-card" id="resultCard" hidden>
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-sub" id="resultSub"></div>
+      <button id="ok" class="btn btn-ghost">Ок</button>
+    </section>
+  </main>
+
+  <footer class="bottom">
+    <div class="small">Сделано для Дарьи от Сережи 25 декабря 2025 года! ✨</div>
+  </footer>
+</div>
+</body>
+</html>
