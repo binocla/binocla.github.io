@@ -12,13 +12,13 @@
   const ITEMS = [
     {
       key: "clay",
-      label: "Гончарная\nTextura",
+      label: "Гончарная\nмастерская",
       icon: "https://img.icons8.com/?size=100&id=ZzjyQCsGr8jy&format=png&color=000000",
       note: "Творим вместе с Дарьей!"
     },
     {
       key: "tea",
-      label: "Чайная\n«Облака»",
+      label: "Чайная",
       icon: "https://img.icons8.com/?size=100&id=cxV5gzMcQjdM&format=png&color=000000",
       note: "Чайная церемония. +вайб"
     },
