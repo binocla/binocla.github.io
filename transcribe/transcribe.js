@@ -101,27 +101,41 @@
     const segments = Array.isArray(data?.segments) ? data.segments : [];
     if (!segments.length) return data?.text || "";
 
-    const order = [];
-    const map = new Map();
     const indexByLabel = new Map();
     let nextIndex = 1;
 
-    for (const segment of segments) {
-      const label = String(segment?.speaker ?? "speaker");
-      if (!indexByLabel.has(label)) {
-        indexByLabel.set(label, nextIndex++);
-        order.push(label);
+    function getDisplayLabel(rawLabel) {
+      const label = String(rawLabel || "").trim();
+      if (!label || label.toLowerCase() === "speaker") {
+        const key = "__speaker__";
+        if (!indexByLabel.has(key)) indexByLabel.set(key, nextIndex++);
+        return `Спикер ${indexByLabel.get(key)}`;
       }
-      if (!map.has(label)) map.set(label, []);
-      if (segment?.text) map.get(label).push(String(segment.text).trim());
+      return label;
     }
 
     const outputLines = [];
-    for (const label of order) {
-      const idx = indexByLabel.get(label);
-      const text = (map.get(label) || []).join(" ").replace(/\s+/g, " ").trim();
-      outputLines.push(text);
+    let currentLabel = null;
+    let currentParts = [];
+
+    function flush() {
+      if (!currentLabel || !currentParts.length) return;
+      const text = currentParts.join(" ").replace(/\s+/g, " ").trim();
+      if (text) outputLines.push(`${currentLabel}: ${text}`);
+      currentLabel = null;
+      currentParts = [];
     }
+
+    for (const segment of segments) {
+      const text = segment?.text ? String(segment.text).trim() : "";
+      if (!text) continue;
+      const label = getDisplayLabel(segment?.speaker ?? "speaker");
+      if (label !== currentLabel) flush();
+      currentLabel = label;
+      currentParts.push(text);
+    }
+    flush();
+
     return outputLines.join("\n\n");
   }
 
