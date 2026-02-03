@@ -60,7 +60,8 @@
       form.append("model", MODEL);
       form.append("file", file);
       form.append("language", language || "ru");
-      form.append("response_format", responseFormat);
+      const apiResponseFormat = responseFormat === "diarized_json" ? "json" : responseFormat;
+      form.append("response_format", apiResponseFormat);
       form.append("chunking_strategy", "auto");
 
       const response = await fetch("https://api.openai.com/v1/audio/transcriptions", {
@@ -80,10 +81,20 @@
         const text = await response.text();
         setOutput(text);
       } else {
-        const data = await response.json();
+        let data;
+        try {
+          data = await response.json();
+        } catch {
+          const text = await response.text();
+          setOutput(text);
+          setMeta(`${file.name} • ${language || "ru"} • ${responseFormat}`);
+          setStatus("Готово.", "ok");
+          return;
+        }
+
         if (responseFormat === "diarized_json") {
           const formatted = formatDiarizedOutput(data);
-          setOutput(formatted || "");
+          setOutput(formatted || data?.text || "");
         } else {
           setOutput(data?.text || "");
         }
@@ -106,12 +117,9 @@
 
     function getDisplayLabel(rawLabel) {
       const label = String(rawLabel || "").trim();
-      if (!label || label.toLowerCase() === "speaker") {
-        const key = "__speaker__";
-        if (!indexByLabel.has(key)) indexByLabel.set(key, nextIndex++);
-        return `Спикер ${indexByLabel.get(key)}`;
-      }
-      return label;
+      const key = label || "__unknown__";
+      if (!indexByLabel.has(key)) indexByLabel.set(key, nextIndex++);
+      return `Спикер ${indexByLabel.get(key)}`;
     }
 
     const outputLines = [];
