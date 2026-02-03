@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>Транскрипция аудио</title>
+
+  <link rel="stylesheet" href="../style.css"/>
+  <link rel="stylesheet" href="transcribe.css"/>
+
+  <script defer src="transcribe.js"></script>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <div class="logo">🎙️</div>
+      <div class="title">
+        <div class="h1">Транскрипция</div>
+        <div class="h2">gpt-4o-transcribe-diarize</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="card transcribe-card">
+      <div class="hint">Выберите аудио (MP3, WAV, M4A и т.д., до 25 МБ), укажите язык и формат, нажмите «Распознать».</div>
+
+      <div class="field">
+        <label class="label" for="apiKey">OpenAI API ключ</label>
+        <input id="apiKey" class="input" type="password" placeholder="sk-..." autocomplete="off"/>
+      </div>
+
+      <div class="field">
+        <label class="label" for="language">Язык</label>
+        <input id="language" class="input" type="text" value="ru"/>
+      </div>
+
+      <div class="field">
+        <label class="label" for="format">Формат ответа</label>
+        <select id="format" class="input select">
+          <option value="diarized_json" selected>diarized_json (спикеры)</option>
+          <option value="json">json</option>
+          <option value="text">text</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="label" for="audioFile">Аудиофайл (MP3)</label>
+        <input id="audioFile" class="input file" type="file" accept="audio/mpeg,audio/mp3,audio/*"/>
+      </div>
+
+      <div class="row wrap">
+        <button id="btnTranscribe" class="btn btn-primary">Распознать</button>
+        <button id="btnDownload" class="btn" disabled>Скачать текст</button>
+        <button id="btnClear" class="btn btn-ghost" type="button">Очистить</button>
+      </div>
+
+      <div id="status" class="status"></div>
+    </section>
+
+    <section class="card output-card">
+      <div class="output-head">
+        <div class="output-title">Результат</div>
+        <div class="output-meta" id="outputMeta">—</div>
+      </div>
+      <textarea id="output" class="output" placeholder="Здесь появится текст распознавания" spellcheck="false"></textarea>
+    </section>
+  </main>
+
+  <footer class="bottom">
+    <div class="small">Загрузка идет напрямую в OpenAI API. Локальный файл не сохраняется.</div>
+  </footer>
+</div>
+</body>
+</html>
