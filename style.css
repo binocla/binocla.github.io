@@ -179,6 +179,11 @@ body {
   border-color: rgba(255, 255, 255, 0.18);
 }
 
+.btn-secondary {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(124, 92, 255, 0.18));
+  border-color: rgba(124, 92, 255, 0.34);
+}
+
 .btn-ghost {
   width: 100%;
   background: rgba(255, 255, 255, 0.05);
@@ -188,6 +193,10 @@ body {
   display: flex;
   justify-content: center;
   text-decoration: none;
+}
+
+.btn-game-link {
+  width: 100%;
 }
 
 .hint {
