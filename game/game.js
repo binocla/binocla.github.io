@@ -6,6 +6,7 @@
     const overlayEyebrow = $("overlayEyebrow");
     const overlayTitle = $("overlayTitle");
     const overlayMessage = $("overlayMessage");
+    const overlayReward = $("overlayReward");
     const overlayMeta = $("overlayMeta");
     const primaryAction = $("primaryAction");
     const statusText = $("statusText");
@@ -17,11 +18,19 @@
     const mobileSheet = $("mobileSheet");
     const mobileSheetButton = $("mobileSheetButton");
     const mobileSheetClose = $("mobileSheetClose");
+    const portraitLock = $("portraitLock");
+    const pageShell = document.querySelector(".page-shell");
     const controlButtons = [...document.querySelectorAll("[data-dir]")];
-    if (!canvas || !ctx || !overlay || !overlayEyebrow || !overlayTitle || !overlayMessage || !overlayMeta || !primaryAction || !statusText || !progressList || !livesStat || !timerStat || !mobileStatusText || !mobileProgressList || !mobileSheet || !mobileSheetButton || !mobileSheetClose) return;
+    if (!canvas || !ctx || !overlay || !overlayEyebrow || !overlayTitle || !overlayMessage || !overlayReward || !overlayMeta || !primaryAction || !statusText || !progressList || !livesStat || !timerStat || !mobileStatusText || !mobileProgressList || !mobileSheet || !mobileSheetButton || !mobileSheetClose || !portraitLock || !pageShell) return;
 
     const world = {width: 960, height: 640};
+    const directions = ["up", "down", "left", "right"];
     const keys = {up: false, down: false, left: false, right: false};
+    const keySources = {
+        keyboard: {up: false, down: false, left: false, right: false},
+        buttons: {up: false, down: false, left: false, right: false},
+        drag: {up: false, down: false, left: false, right: false}
+    };
     const emojiFont = "28px 'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif";
     const emojiFontSmall = "20px 'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif";
     const labelFont = "700 16px 'IBM Plex Sans',sans-serif";
@@ -105,6 +114,72 @@
     let confetti = [];
     let fireflies = [];
     let lastTime = 0;
+    let dragPointerId = null;
+    let dragStart = null;
+
+    function hasCoarsePointer() {
+        return typeof window.matchMedia === "function" && window.matchMedia("(pointer: coarse)").matches;
+    }
+
+    function isCompactViewport() {
+        return window.innerWidth <= 980 && (window.innerHeight <= 820 || hasCoarsePointer());
+    }
+
+    function isLandscapeViewport() {
+        return window.innerWidth > window.innerHeight;
+    }
+
+    function isPortraitLocked() {
+        return hasCoarsePointer() && isCompactViewport() && !isLandscapeViewport();
+    }
+
+    function syncKeys() {
+        for (const dir of directions) {
+            keys[dir] = keySources.keyboard[dir] || keySources.buttons[dir] || keySources.drag[dir];
+        }
+    }
+
+    function clearSource(source) {
+        for (const dir of directions) {
+            keySources[source][dir] = false;
+        }
+        syncKeys();
+    }
+
+    function setSourceDirection(source, dir, value) {
+        keySources[source][dir] = value;
+        syncKeys();
+    }
+
+    function setExclusiveDirection(source, dir) {
+        for (const key of directions) {
+            keySources[source][key] = key === dir;
+        }
+        syncKeys();
+    }
+
+    function syncMobileUi() {
+        const portraitLocked = isPortraitLocked();
+        const mobilePlaying = isCompactViewport() && state.mode === "playing" && !portraitLocked;
+        pageShell.classList.toggle("mobile-playing", mobilePlaying);
+        document.body.classList.toggle("mobile-playing", mobilePlaying);
+        pageShell.classList.toggle("portrait-locked", portraitLocked);
+        document.body.classList.toggle("portrait-locked", portraitLocked);
+        portraitLock.hidden = !portraitLocked;
+        if (portraitLocked) {
+            mobileSheet.hidden = true;
+            clearSource("buttons");
+            clearSource("drag");
+        }
+    }
+
+    function dragDirection(dx, dy) {
+        const threshold = 18;
+        if (Math.abs(dx) < threshold && Math.abs(dy) < threshold) return null;
+        return Math.abs(dx) > Math.abs(dy)
+            ? (dx < 0 ? "left" : "right")
+            : (dy < 0 ? "up" : "down");
+    }
 
     function makePickups() {
         pickups = pickupDefs.map((item, index) => ({...item, collected: false, bob: index * 0.8}));
@@ -135,13 +210,22 @@
         timerStat.textContent = formatTime(state.elapsed);
     }
 
-    function showOverlay(eyebrow, title, message, meta, buttonText) {
+    function showOverlay(eyebrow, title, message, meta, buttonText, rewardHtml = "") {
         overlay.hidden = false;
+        clearSource("buttons");
+        clearSource("drag");
         overlayEyebrow.textContent = eyebrow;
         overlayTitle.textContent = title;
         overlayMessage.textContent = message;
         overlayMeta.textContent = meta;
         primaryAction.textContent = buttonText;
+        if (rewardHtml) {
+            overlayReward.innerHTML = rewardHtml;
+            overlayReward.hidden = false;
+        } else {
+            overlayReward.innerHTML = "";
+            overlayReward.hidden = true;
+        }
     }
 
     function renderProgress() {
@@ -164,6 +248,8 @@
         trail = [];
         particles = [];
         confetti = [];
+        clearSource("buttons");
+        clearSource("drag");
         mobileSheet.hidden = true;
         checkpoints.forEach((point, index) => {
             point.unlocked = index === 0;
@@ -174,14 +260,21 @@
         renderProgress();
         updateHud();
         setStatus("Нажми \"Начать путь\". Собираем змеек");
-        showOverlay("Ура я сделал мини игру", "Серж уже ждет", "Собери трех змей для Дарьи, чтобы покорить её сердечко. Тут есть чекпоинты на всякий случай", "Стрелки или WASD для движения. От Авокадо уклоняемся!", "Серж (Амур), Дарья - Психея");
+        showOverlay("Ура я сделал мини игру", "Серж уже ждет", "Собери трех змей для Дарьи, чтобы покорить её сердечко. Тут есть чекпоинты на всякий случай", "Стрелки или WASD для движения. На телефоне можно вести пальцем по полю или жать на стрелки. От Авокадо уклоняемся!", "Серж (Амур), Дарья - Психея");
+        syncMobileUi();
     }
 
     function startRun() {
+        if (isPortraitLocked()) {
+            setStatus("Поверни телефон горизонтально, чтобы играть.");
+            syncMobileUi();
+            return;
+        }
         state.mode = "playing";
         overlay.hidden = true;
         mobileSheet.hidden = true;
         setStatus("Ты чудо 🐁🐁🐁");
+        syncMobileUi();
     }
 
     function moveToCheckpoint() {
@@ -234,12 +327,11 @@
     }
 
     function getCamera() {
-        const isMobile = window.innerWidth <= 760;
-        if (!isMobile) {
+        if (!isCompactViewport()) {
             return {scale: 1, offsetX: 0, offsetY: 0};
         }
 
-        const scale = 2.35;
+        const scale = isLandscapeViewport() ? 1.82 : 2.35;
         const viewWidth = world.width / scale;
         const viewHeight = world.height / scale;
         const centerX = player.x + player.size / 2;
@@ -362,6 +454,7 @@
                 state.mode = "retry";
                 state.lives = state.maxLives;
                 showOverlay("Го заново", "Авокадо победили. Серж стал веганом", "Продолжишь с последнего чекпоинта и полным запасом сердечек", `До этого момента ты собрала змей: ${state.collectedIds.length}/3. Время в пути: ${formatTime(state.elapsed)}.`, "Продолжить");
+                syncMobileUi();
             }
             updateHud();
             return;
@@ -383,8 +476,16 @@
             life: 1.9 + Math.random() * 0.8,
             color: ["#ffd166", "#ff9c63", "#87d6c6", "#f6a6ff"][i % 4]
         }));
-        setStatus("Победа! А вот и пару промокодов для рулетки: \"счастье\" и \"глубина\".");
-        showOverlay("Финиш", "Дарья дождалась", "Ты довела Сережу... (до свидания), собрала всех змей и не дала авокадо испортить вечер ураа!", `Время: ${formatTime(state.elapsed)}. Столкновений: ${state.hits}. Змей: ${state.collectedIds.length}.`, "Сыграть еще");
+        setStatus("Победа!\nПромокоды для рулетки: «счастье» и «глубина».");
+        showOverlay(
+            "Финиш",
+            "Дарья дождалась",
+            "Ты довела Сережу... (до свидания), собрала всех змей и не дала авокадо испортить вечер ураа!",
+            `Время: ${formatTime(state.elapsed)}. Столкновений: ${state.hits}. Змей: ${state.collectedIds.length}.`,
+            "Сыграть еще",
+            `<strong>Промокоды для рулетки</strong><div class="promo-codes"><span class="promo-code">счастье</span><span class="promo-code">глубина</span></div>`
+        );
+        syncMobileUi();
     }
 
     function updateParticles(dt) {
@@ -412,7 +513,7 @@
         updateFireflies(dt);
         updateParticles(dt);
         updateConfetti(dt);
-        if (state.mode !== "playing") return;
+        if (state.mode !== "playing" || isPortraitLocked()) return;
         state.elapsed += dt;
         state.sparkle += dt;
         if (player.invuln > 0) player.invuln -= dt;
@@ -669,18 +770,21 @@
     }
 
     function drawHint() {
+        const compact = isCompactViewport();
+        const boxWidth = compact ? 320 : 300;
+        const boxHeight = compact ? 50 : 42;
         ctx.fillStyle = "rgba(9,16,28,0.42)";
-        roundedRectPath(24, 18, 300, 42, 18);
+        roundedRectPath(24, 18, boxWidth, boxHeight, 18);
         ctx.fill();
         ctx.fillStyle = "#fff7f0";
-        ctx.font = "600 15px 'IBM Plex Sans',sans-serif";
+        ctx.font = compact ? "600 14px 'IBM Plex Sans',sans-serif" : "600 15px 'IBM Plex Sans',sans-serif";
         ctx.textAlign = "left";
         ctx.textBaseline = "middle";
         let text = "Ищи первую змею у оранжереи";
         if (state.collectedIds.length === 1) text = "Фонарь обновлен. Теперь держи курс к центру";
         if (state.collectedIds.length === 2) text = "Осталась последняя змея и финиш у Дарьи";
         if (state.collectedIds.length === 3) text = "Все змеи собраны. Поднимайся к Дарье";
-        ctx.fillText(text, 42, 40);
+        ctx.fillText(text, 42, compact ? 43 : 40);
     }
 
     function draw() {
@@ -714,35 +818,79 @@
 
     function keyChange(event, value) {
         const key = event.key.toLowerCase();
-        if (["arrowup", "w", "ц"].includes(key)) keys.up = value;
-        if (["arrowdown", "s", "ы"].includes(key)) keys.down = value;
-        if (["arrowleft", "a", "ф"].includes(key)) keys.left = value;
-        if (["arrowright", "d", "в"].includes(key)) keys.right = value;
+        if (["arrowup", "w", "ц"].includes(key)) setSourceDirection("keyboard", "up", value);
+        if (["arrowdown", "s", "ы"].includes(key)) setSourceDirection("keyboard", "down", value);
+        if (["arrowleft", "a", "ф"].includes(key)) setSourceDirection("keyboard", "left", value);
+        if (["arrowright", "d", "в"].includes(key)) setSourceDirection("keyboard", "right", value);
     }
 
     document.addEventListener("keydown", (event) => keyChange(event, true));
     document.addEventListener("keyup", (event) => keyChange(event, false));
     window.addEventListener("blur", () => {
-        keys.up = false;
-        keys.down = false;
-        keys.left = false;
-        keys.right = false;
+        clearSource("keyboard");
+        clearSource("buttons");
+        clearSource("drag");
+    });
+    window.addEventListener("resize", syncMobileUi);
+    window.addEventListener("orientationchange", syncMobileUi);
+
+    function releaseDragControl(pointerId) {
+        if (pointerId !== undefined && pointerId !== dragPointerId) return;
+        dragPointerId = null;
+        dragStart = null;
+        clearSource("drag");
+    }
+
+    canvas.addEventListener("pointerdown", (event) => {
+        if (!hasCoarsePointer() || !isCompactViewport() || state.mode !== "playing") return;
+        if (event.pointerType === "mouse") return;
+        dragPointerId = event.pointerId;
+        dragStart = {x: event.clientX, y: event.clientY};
+        canvas.setPointerCapture?.(event.pointerId);
+        clearSource("drag");
+        event.preventDefault();
+    });
+
+    canvas.addEventListener("pointermove", (event) => {
+        if (event.pointerId !== dragPointerId || !dragStart) return;
+        const dir = dragDirection(event.clientX - dragStart.x, event.clientY - dragStart.y);
+        if (dir) {
+            setExclusiveDirection("drag", dir);
+        } else {
+            clearSource("drag");
+        }
+        event.preventDefault();
+    });
+
+    canvas.addEventListener("pointerup", (event) => {
+        releaseDragControl(event.pointerId);
+    });
+    canvas.addEventListener("pointercancel", (event) => {
+        releaseDragControl(event.pointerId);
+    });
+    canvas.addEventListener("lostpointercapture", (event) => {
+        releaseDragControl(event.pointerId);
     });
 
     controlButtons.forEach((button) => {
         const dir = button.dataset.dir;
         const down = (event) => {
             event.preventDefault();
-            keys[dir] = true;
+            button.classList.add("is-pressed");
+            button.setPointerCapture?.(event.pointerId);
+            setSourceDirection("buttons", dir, true);
         };
         const up = (event) => {
             event.preventDefault();
-            keys[dir] = false;
+            button.classList.remove("is-pressed");
+            setSourceDirection("buttons", dir, false);
         };
         button.addEventListener("pointerdown", down);
         button.addEventListener("pointerup", up);
         button.addEventListener("pointerleave", up);
         button.addEventListener("pointercancel", up);
+        button.addEventListener("contextmenu", (event) => event.preventDefault());
+        button.addEventListener("dragstart", (event) => event.preventDefault());
     });
 
     mobileSheetButton.addEventListener("click", () => {
@@ -770,6 +918,7 @@
             overlay.hidden = true;
             setStatus("Продолжаем. Фонарь уже зажжен, можно снова штурмовать маршрут.");
             updateHud();
+            syncMobileUi();
             return;
         }
         if (state.mode === "won") {

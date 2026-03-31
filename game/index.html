@@ -27,6 +27,17 @@
     </div>
   </header>
 
+  <div id="portraitLock" class="portrait-lock" hidden>
+    <div class="portrait-lock-card">
+      <p class="panel-label">Только горизонтально</p>
+      <h2>Поверни телефон</h2>
+      <p>
+        С телефона эта мини-игра работает только в горизонтальном режиме. После поворота управление и интерфейс снова появятся.
+      </p>
+      <a class="ghost-btn link-btn" href="../">К рулетке</a>
+    </div>
+  </div>
+
   <main class="game-layout">
     <section class="stage-card">
       <div class="stage-top">
@@ -59,6 +70,7 @@
             <p id="overlayMessage">
               Собери трех змей для Дарьи. Каждая найденная змея становится спутником, открывает новый чекпоинт и делает путь до богини Дарьи проще!!!
             </p>
+            <div id="overlayReward" class="overlay-reward" hidden></div>
             <div id="overlayMeta" class="overlay-meta">
               Стрелки или WASD для движения. Дикий огурец (авокадо)
             </div>
@@ -71,12 +83,20 @@
       </div>
 
       <div class="mobile-controls" aria-label="Управление">
-        <button class="control-btn control-up" data-dir="up" type="button">↑</button>
+        <button class="control-btn control-up" data-dir="up" type="button" aria-label="Вверх">
+          <span class="control-icon" aria-hidden="true"></span>
+        </button>
         <div class="control-row">
-          <button class="control-btn" data-dir="left" type="button">←</button>
-          <button class="control-btn" data-dir="right" type="button">→</button>
+          <button class="control-btn control-left" data-dir="left" type="button" aria-label="Влево">
+            <span class="control-icon" aria-hidden="true"></span>
+          </button>
+          <button class="control-btn control-right" data-dir="right" type="button" aria-label="Вправо">
+            <span class="control-icon" aria-hidden="true"></span>
+          </button>
         </div>
-        <button class="control-btn control-down" data-dir="down" type="button">↓</button>
+        <button class="control-btn control-down" data-dir="down" type="button" aria-label="Вниз">
+          <span class="control-icon" aria-hidden="true"></span>
+        </button>
       </div>
 
       <div id="mobileSheet" class="mobile-sheet" hidden>
@@ -85,7 +105,7 @@
             <p class="panel-label">Для Дарьи</p>
             <button id="mobileSheetClose" class="ghost-btn mobile-sheet-close" type="button">Закрыть</button>
           </div>
-          <p id="mobileStatusText" class="status-text mobile-status-text"></p>
+          <p id="mobileStatusText" class="status-text mobile-status-text" aria-live="polite"></p>
           <div id="mobileProgressList" class="progress-list"></div>
         </div>
       </div>
@@ -97,7 +117,7 @@
         <div id="progressList" class="progress-list"></div>
       </section>
 
-      <p id="statusText" class="status-text">
+      <p id="statusText" class="status-text" aria-live="polite">
         Берем всех змей, уклоняемся от здорового питания и топаем к моей музе
       </p>
     </aside>

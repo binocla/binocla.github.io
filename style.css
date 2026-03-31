@@ -13,6 +13,10 @@
   --radius: 18px;
   --radius2: 24px;
   --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
 }
 
 * {
@@ -31,13 +35,14 @@ body {
   radial-gradient(900px 700px at 55% 95%, rgba(255, 77, 109, 0.14), transparent 55%),
   var(--bg);
   color: var(--text);
+  overflow-x: hidden;
 }
 
 .app {
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 16px 14px 18px;
+  padding: calc(16px + var(--safe-top)) calc(14px + var(--safe-right)) calc(18px + var(--safe-bottom)) calc(14px + var(--safe-left));
   gap: 14px;
   max-width: 720px;
   margin: 0 auto;
@@ -163,6 +168,7 @@ body {
   transition: transform 0.05s ease, background 0.2s ease, border 0.2s ease;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .btn:active {
@@ -238,6 +244,8 @@ body {
   color: var(--muted);
   line-height: 1.35;
   margin-bottom: 12px;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
 }
 
 .bottom {
@@ -353,6 +361,7 @@ body {
   font-size: 13px;
   padding: 0 10px;
   color: rgba(255,255,255,.88);
+  line-height: 1.25;
 }
 
 .item .sub{
@@ -360,6 +369,7 @@ body {
   font-size: 12px;
   color: var(--muted);
   padding: 0 10px;
+  line-height: 1.25;
 }
 
 .result-title{
@@ -384,4 +394,118 @@ body {
   filter: drop-shadow(0 2px 8px rgba(0,0,0,.45));
 }
 
+@media (max-width: 640px) {
+  .app {
+    gap: 12px;
+    padding: calc(14px + var(--safe-top)) calc(12px + var(--safe-right)) calc(16px + var(--safe-bottom)) calc(12px + var(--safe-left));
+  }
+
+  .top {
+    padding-top: 2px;
+  }
+
+  .brand {
+    gap: 10px;
+  }
+
+  .logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    font-size: 20px;
+  }
+
+  .title .h1 {
+    font-size: 17px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .wheel-card {
+    padding: 12px 12px 14px;
+  }
+
+  .reel-wrap {
+    margin-top: 8px;
+    padding: 14px 8px 14px;
+  }
+
+  .reel-wrap::after {
+    width: min(140px, 38vw);
+  }
+
+  .reel {
+    gap: 10px;
+  }
+
+  .item {
+    width: min(34vw, 126px);
+    min-width: 112px;
+    height: 126px;
+  }
+
+  .item .label {
+    font-size: 12.5px;
+    padding-inline: 8px;
+  }
+
+  .item .sub {
+    font-size: 11.5px;
+    padding-inline: 8px;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+
+  .input,
+  .btn {
+    width: 100%;
+    min-height: 48px;
+    font-size: 16px;
+  }
+
+  .status {
+    min-height: 20px;
+    font-size: 14px;
+  }
+
+  .result-card {
+    padding: 16px 12px 14px;
+  }
+
+  .result-title {
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 18px;
+    line-height: 1.25;
+  }
+
+  .result-sub {
+    font-size: 15px;
+    line-height: 1.45;
+  }
+}
+
+@media (max-width: 390px) {
+  .app {
+    padding: calc(14px + var(--safe-top)) calc(10px + var(--safe-right)) calc(16px + var(--safe-bottom)) calc(10px + var(--safe-left));
+  }
+
+  .marker {
+    top: 8px;
+  }
+
+  .reel-wrap::after {
+    width: min(132px, 40vw);
+  }
+
+  .item {
+    width: min(35vw, 118px);
+    min-width: 108px;
+    height: 122px;
+  }
+}
 
