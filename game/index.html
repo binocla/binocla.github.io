@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>Змеиный маршрут к Дарье</title>
+  <meta name="description" content="Мини-игра про путь к свиданию и любимых змей Дарьи."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=IBM+Plex+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="game.css"/>
+  <script defer src="game.js"></script>
+</head>
+<body>
+<div class="page-shell">
+  <div class="aurora aurora-a"></div>
+  <div class="aurora aurora-b"></div>
+
+  <header class="hero">
+    <a class="back-link" href="/">← Назад</a>
+    <div class="hero-copy">
+      <p class="eyebrow">Мини-игра для Дарьи</p>
+      <h1>Змеиный маршрут к свиданию</h1>
+      <p class="lead">
+        Доведи Сержа до сердечка Дарьи пж пж блин!
+      </p>
+    </div>
+  </header>
+
+  <main class="game-layout">
+    <section class="stage-card">
+      <div class="stage-top">
+        <div>
+          <p class="panel-label">Квест</p>
+          <h2>Собери змей, активируй фонари и дойди до Дарьи</h2>
+        </div>
+
+        <div class="mini-stats">
+          <div class="stat-pill">
+            <span class="stat-label">Любовь к Дарье</span>
+            <span id="livesStat" class="stat-value">3</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-label">Время</span>
+            <span id="timerStat" class="stat-value">00:00</span>
+          </div>
+        </div>
+
+        <button id="mobileSheetButton" class="ghost-btn mobile-sheet-btn" type="button">Змеи</button>
+      </div>
+
+      <div class="canvas-wrap">
+        <canvas id="gameCanvas" width="960" height="640" aria-label="Мини-игра"></canvas>
+
+        <div id="overlay" class="overlay">
+          <div class="overlay-card">
+            <p id="overlayEyebrow" class="panel-label">Новая игра</p>
+            <h3 id="overlayTitle">Это я иду через горпарк к тебе</h3>
+            <p id="overlayMessage">
+              Собери трех змей для Дарьи. Каждая найденная змея становится спутником, открывает новый чекпоинт и делает путь до богини Дарьи проще!!!
+            </p>
+            <div id="overlayMeta" class="overlay-meta">
+              Стрелки или WASD для движения. Дикий огурец (авокадо)
+            </div>
+            <div class="overlay-actions">
+              <button id="primaryAction" class="solid-btn" type="button">Начать путь</button>
+              <a class="ghost-btn link-btn" href="/">К рулетке</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mobile-controls" aria-label="Управление">
+        <button class="control-btn control-up" data-dir="up" type="button">↑</button>
+        <div class="control-row">
+          <button class="control-btn" data-dir="left" type="button">←</button>
+          <button class="control-btn" data-dir="right" type="button">→</button>
+        </div>
+        <button class="control-btn control-down" data-dir="down" type="button">↓</button>
+      </div>
+
+      <div id="mobileSheet" class="mobile-sheet" hidden>
+        <div class="mobile-sheet-card">
+          <div class="mobile-sheet-head">
+            <p class="panel-label">Для Дарьи</p>
+            <button id="mobileSheetClose" class="ghost-btn mobile-sheet-close" type="button">Закрыть</button>
+          </div>
+          <p id="mobileStatusText" class="status-text mobile-status-text"></p>
+          <div id="mobileProgressList" class="progress-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="info-card">
+      <section class="hud-block">
+        <p class="panel-label">Дары для Дарьи</p>
+        <div id="progressList" class="progress-list"></div>
+      </section>
+
+      <p id="statusText" class="status-text">
+        Берем всех змей, уклоняемся от здорового питания и топаем к моей музе
+      </p>
+    </aside>
+  </main>
+</div>
+</body>
+</html>

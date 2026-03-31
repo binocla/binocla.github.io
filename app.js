@@ -89,6 +89,18 @@
       icon: "https://img.icons8.com/?size=100&id=QTfkMOYni8l8&format=png&color=000000",
       note: "Идем спать (не вместе!!!)"
     },
+    {
+      key: "happiness",
+      label: "Счастье",
+      icon: "✨",
+      note: "Заполни note"
+    },
+    {
+      key: "depth",
+      label: "Часики",
+      icon: "https://img.icons8.com/?size=100&id=Li3Eo6ZAsBuI&format=png&color=000000",
+      note: "Чтобы точно не пропустить от меня смс"
+    },
   ];
 
   // пароль -> ключ результата (порядок НЕ обязателен)
@@ -96,6 +108,8 @@
     ["дарья", "clay"],
     ["змея", "tea"],
     ["психея", "pub"],
+    ["счастье", "happiness"],
+    ["глубина", "depth"],
   ]);
 
   // каждый пароль можно 1 раз

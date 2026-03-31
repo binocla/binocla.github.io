@@ -184,6 +184,12 @@ body {
   background: rgba(255, 255, 255, 0.05);
 }
 
+.btn-link {
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+}
+
 .hint {
   color: var(--muted);
   font-size: 13px;
