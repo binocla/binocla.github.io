@@ -91,9 +91,9 @@
     },
     {
       key: "happiness",
-      label: "Счастье",
-      icon: "✨",
-      note: "Заполни note"
+      label: "Medicube",
+      icon: "https://img.icons8.com/?size=100&id=40855&format=png&color=000000",
+      note: "Какая-то крутая штука, не разобрался..."
     },
     {
       key: "depth",
