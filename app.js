@@ -65,7 +65,7 @@
   function render() {
     const openRoles = new Set([...document.querySelectorAll('details[open]')].map(el => el.dataset.role));
     document.documentElement.lang = language;
-    document.title = `${t('name')} · Java Team Lead`;
+    document.title = `${t('name')} · Lead Software Engineer (Java)`;
     $('meta[name="description"]').content = t('meta');
     $('meta[property="og:title"]').content = document.title;
     $('meta[property="og:description"]').content = t('meta');

@@ -103,7 +103,7 @@ const translations = {
     copied: 'Ссылка на русскую версию скопирована', copyFailed: 'Не удалось скопировать. Скопируйте адрес из строки браузера.',
     printHint: 'Выберите «Сохранить как PDF» в окне печати', backTop: 'Наверх ↑',
     close: 'Закрыть', dark: 'Тёмная тема', light: 'Светлая тема',
-    meta: 'Сергей Шамов — Java Team Lead в Сбере. Java, Quarkus, Spring Boot, Kafka, PostgreSQL, Kubernetes.'
+    meta: 'Сергей Шамов — Lead Software Engineer (Java) в Сбере. Java, Quarkus, Spring Boot, Kafka, PostgreSQL, Kubernetes.'
   },
   en: {
     skip: 'Skip to content', name: 'Sergey Shamov', navigation: 'Navigation',
@@ -120,6 +120,6 @@ const translations = {
     copied: 'Link to the English version copied', copyFailed: 'Could not copy. Please copy the address from your browser.',
     printHint: 'Choose “Save as PDF” in the print dialog', backTop: 'Back to top ↑',
     close: 'Close', dark: 'Dark theme', light: 'Light theme',
-    meta: 'Sergey Shamov — Java Team Lead at Sber. Java, Quarkus, Spring Boot, Kafka, PostgreSQL, Kubernetes.'
+    meta: 'Sergey Shamov — Lead Software Engineer (Java) at Sber. Java, Quarkus, Spring Boot, Kafka, PostgreSQL, Kubernetes.'
   }
 };
