@@ -1,436 +1,158 @@
+'use strict';
 (() => {
-  // ===== Telegram init =====
-  const tg = window.Telegram?.WebApp;
-  try {
-    tg?.ready();
-    tg?.expand();
-  } catch (_) {
+  const $ = (selector) => document.querySelector(selector);
+  const storage = {
+    get(key) { try { return localStorage.getItem(key); } catch { return null; } },
+    set(key, value) { try { localStorage.setItem(key, value); } catch { /* Works without storage. */ } }
+  };
+  const requestedLanguage = new URLSearchParams(location.search).get('lang');
+  const savedLanguage = storage.get('resume-language');
+  let language = ['ru', 'en'].includes(requestedLanguage) ? requestedLanguage : ['ru', 'en'].includes(savedLanguage) ? savedLanguage : 'ru';
+  let filter = 'all';
+  let activeCase = null;
+  let toastTimer;
+  const text = (value) => typeof value === 'string' ? value : value[language];
+  const t = (key) => translations[language][key];
+  // Text in resume.js is curated source content, never user/URL HTML.
+  const escape = (value) => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  const tags = (items) => `<ul class="tech-tags">${items.map(item => `<li>${escape(item)}</li>`).join('')}</ul>`;
+
+  function renderCases() {
+    $('#impact-cards').innerHTML = resume.cases.map(item => `
+      <button type="button" class="impact-card" data-case="${item.id}" aria-haspopup="dialog">
+        <span class="card-top"><span class="mono">${item.number}</span><span class="card-arrow" aria-hidden="true">↗</span></span>
+        <span class="metric ${item.id === 'mentoring' ? 'metric-word' : ''}">${item.metric}</span>
+        <span class="metric-label">${escape(text(item.label))}</span>
+        <span class="card-title">${escape(text(item.title))}</span>
+        <span class="card-source">${escape(text(item.source))}</span>
+        <span class="case-more">${t('caseMore')} <span aria-hidden="true">→</span></span>
+        <span class="print-case">${escape(text(item.result))}</span>
+      </button>`).join('');
   }
 
-  // ===== Config =====
-  // Можешь менять label/icon/note как хочешь
-  const ITEMS = [
-    {
-      key: "clay",
-      label: "Гончарная\nмастерская",
-      icon: "https://img.icons8.com/?size=100&id=ZzjyQCsGr8jy&format=png&color=000000",
-      note: "Творим вместе с Дарьей!"
-    },
-    {
-      key: "tea",
-      label: "Чайная",
-      icon: "https://img.icons8.com/?size=100&id=cxV5gzMcQjdM&format=png&color=000000",
-      note: "Чайная церемония. +вайб"
-    },
-    {
-      key: "pub",
-      label: "Ресторан",
-      icon: "https://img.icons8.com/?size=100&id=115346&format=png&color=000000",
-      note: "Наконец-то можно поесть..."
-    },
-    // новые "для разнообразия"
-    {
-      key: "f1",
-      label: "Кино",
-      icon: "https://img.icons8.com/?size=100&id=Zv_fpGUAPwFq&format=png&color=000000",
-      note: "Фильмы 18+ для извращенцев)"
-    },
-    {
-      key: "f2",
-      label: "Каток",
-      icon: "https://img.icons8.com/?size=100&id=isG23UlrlNt9&format=png&color=000000",
-      note: "Я не умею, если честно"
-    },
-    {
-      key: "f3",
-      label: "Боулинг",
-      icon: "https://img.icons8.com/?size=100&id=9qdlHo32Ue91&format=png&color=000000",
-      note: "Погонять шары..."
-    },
-    {
-      key: "f4",
-      label: "Кофе",
-      icon: "https://img.icons8.com/?size=100&id=115630&format=png&color=000000",
-      note: "Только без сливок!"
-    },
-    {
-      key: "f5",
-      label: "Панорама",
-      icon: "https://img.icons8.com/?size=100&id=113846&format=png&color=000000",
-      note: "Посмотреть на город"
-    },
-    {
-      key: "f6",
-      label: "Настолки",
-      icon: "https://img.icons8.com/?size=100&id=4JilNTvGn5ie&format=png&color=000000",
-      note: "Дурак на раздевание"
-    },
-    {
-      key: "f7",
-      label: "Караоке",
-      icon: "https://img.icons8.com/?size=100&id=124070&format=png&color=000000",
-      note: "Навалить рэпа"
-    },
-    {
-      key: "f8",
-      label: "Музей",
-      icon: "https://img.icons8.com/?size=100&id=WRBheC5k5NpV&format=png&color=000000",
-      note: "Не Лувр, но что имеем"
-    },
-    {
-      key: "f9",
-      label: "Квест",
-      icon: "https://img.icons8.com/?size=100&id=124068&format=png&color=000000",
-      note: "Только не Сайлент Хилл"
-    },
-    {
-      key: "f10",
-      label: "Чилл",
-      icon: "https://img.icons8.com/?size=100&id=QTfkMOYni8l8&format=png&color=000000",
-      note: "Идем спать (не вместе!!!)"
-    },
-    {
-      key: "happiness",
-      label: "Medicube",
-      icon: "https://img.icons8.com/?size=100&id=40855&format=png&color=000000",
-      note: "Какая-то крутая штука, не разобрался..."
-    },
-    {
-      key: "depth",
-      label: "Часики",
-      icon: "https://img.icons8.com/?size=100&id=Li3Eo6ZAsBuI&format=png&color=000000",
-      note: "Чтобы точно не пропустить от меня смс"
-    },
-  ];
-
-  // пароль -> ключ результата (порядок НЕ обязателен)
-  const PASSWORD_TO_KEY = new Map([
-    ["дарья", "clay"],
-    ["змея", "tea"],
-    ["психея", "pub"],
-    ["счастье", "happiness"],
-    ["глубина", "depth"],
-  ]);
-
-  // каждый пароль можно 1 раз
-  const usedPasswords = new Set();
-  let spinning = false;
-
-  // ===== DOM =====
-  const reelEl = document.getElementById("reel");
-  const viewportEl = document.getElementById("viewport");
-  const btnSpin = document.getElementById("spin");
-  const inpPwd = document.getElementById("password");
-  const statusEl = document.getElementById("status");
-
-  const resultCard = document.getElementById("resultCard");
-  const resultTitle = document.getElementById("resultTitle");
-  const resultSub = document.getElementById("resultSub");
-  const btnOk = document.getElementById("ok");
-
-  if (!reelEl || !viewportEl || !btnSpin || !inpPwd || !statusEl || !resultCard || !resultTitle || !resultSub) {
-    console.error("Missing required DOM elements");
-    return;
+  function renderExperience(openRoles) {
+    const initialRender = !$('#experience-list').children.length;
+    $('#experience-list').innerHTML = resume.jobs.map((job, index) => `
+      <article class="experience-item ${job.current ? 'current-job' : ''}" id="job-${job.id}">
+        <div class="job-date"><span class="timeline-dot" aria-hidden="true"></span><span>${escape(text(job.period))}</span>${job.current ? `<span class="current-badge">${t('current')}</span>` : ''}</div>
+        <div class="job-body"><div class="job-heading"><h3>${escape(text(job.company))}</h3><span class="job-domain">${escape(text(job.domain))}</span></div>
+          <p class="job-role">${escape(text(job.role))}</p><p class="job-summary">${escape(text(job.summary))}</p>
+          ${job.current ? tags(job.tech) : `<details data-role="${job.id}" ${openRoles.has(job.id) || (initialRender && index === 1) ? 'open' : ''}><summary>${t('details')}<span aria-hidden="true">+</span></summary><div class="job-details"><ul class="job-bullets">${job.bullets.map(item => `<li>${escape(text(item))}</li>`).join('')}</ul>${tags(job.tech)}</div></details>`}
+        </div>
+      </article>`).join('');
   }
 
-  const gsap = window.gsap;
-  if (!gsap) {
-    statusEl.textContent = "GSAP не загрузился. Проверь подключение CDN.";
-    statusEl.classList.add("err");
-    return;
+  function renderStack() {
+    $('#stack-filters').setAttribute('aria-label', t('stackFilter'));
+    const filters = [{ id: 'all', label: t('all') }, ...resume.stack];
+    $('#stack-filters').innerHTML = filters.map(item => `<button type="button" data-filter="${item.id}" aria-pressed="${filter === item.id}">${escape(text(item.label))}${item.id === 'all' ? '<span aria-hidden="true"> ↗</span>' : ''}</button>`).join('');
+    $('#stack-content').innerHTML = resume.stack.map(item => `
+      <article class="stack-card" ${filter !== 'all' && filter !== item.id ? 'hidden' : ''}><span class="stack-icon mono" aria-hidden="true">${item.icon}</span><h3>${escape(text(item.title))}</h3><p>${escape(text(item.description))}</p>${tags(item.tech)}<div class="stack-context"><span class="mono">${t('applied')}</span><span>${escape(text(item.context))}</span></div></article>`).join('');
   }
 
-  // ===== Helpers =====
-  function norm(s) {
-    return (s || "").trim().toLowerCase();
+  function renderBackground() {
+    $('#approach-items').innerHTML = resume.approach.map((item, index) => `<article><span class="mono approach-number">0${index + 1}</span><div><h3>${escape(text(item.title))}</h3><p>${escape(text(item.text))}</p></div></article>`).join('');
+    $('#background-content').innerHTML = `<div class="education-list"><h3 class="mono background-label">${t('education')}</h3>${resume.education.map(item => `<article><span class="mono education-year">${item.year}</span><div><h4>${escape(text(item.name))}</h4><p>${escape(text(item.faculty))}</p><span class="education-status">${t('incomplete')}</span></div></article>`).join('')}</div><div class="spoken-languages"><h3 class="mono background-label">${t('langTitle')}</h3><p><span>${t('russian')}</span><span>${t('native')}</span></p><p><span>${t('english')}</span><span>${t('advanced')}</span></p></div>`;
   }
 
-  function setStatus(text, type) {
-    statusEl.textContent = text || "";
-    statusEl.classList.remove("ok", "err");
-    if (type) statusEl.classList.add(type);
+  function renderCase(id) {
+    const item = resume.cases.find(item => item.id === id);
+    if (!item) return;
+    $('#case-content').innerHTML = `<p class="eyebrow">${escape(text(item.source))}</p><span class="dialog-metric">${item.metric}</span><h2 id="case-title">${escape(text(item.title))}</h2>${['intro', 'work', 'result'].map((key, index) => `<section><h3>${t(['context', 'work', 'result'][index])}</h3><p>${escape(text(item[key]))}</p></section>`).join('')}${tags(item.tech)}`;
   }
 
-  function hideResult() {
-    resultCard.hidden = true;
+  function updateThemeLabel() {
+    const next = document.documentElement.dataset.theme === 'dark' ? t('light') : t('dark');
+    $('#theme-button').setAttribute('aria-label', next);
+    $('#theme-button').title = next;
+    $('meta[name="theme-color"]').content = document.documentElement.dataset.theme === 'dark' ? '#151c25' : '#f5f4f0';
   }
 
-  function showResult(item) {
-    const isUrlIcon = typeof item.icon === "string" && item.icon.startsWith("http");
-
-    resultTitle.innerHTML = `
-    <span class="result-icon">
-      ${
-      isUrlIcon
-        ? `<img src="${escapeHtml(item.icon)}" alt="" />`
-        : escapeHtml(item.icon)
-    }
-    </span>
-    <span class="result-text">${escapeHtml(item.label.replace("\n", " "))}</span>
-  `;
-
-    resultSub.textContent = item.note || "";
-    resultCard.hidden = false;
+  function render() {
+    const openRoles = new Set([...document.querySelectorAll('details[open]')].map(el => el.dataset.role));
+    document.documentElement.lang = language;
+    document.title = `${t('name')} · Java Team Lead`;
+    $('meta[name="description"]').content = t('meta');
+    $('meta[property="og:title"]').content = document.title;
+    $('meta[property="og:description"]').content = t('meta');
+    document.querySelectorAll('[data-i18n]').forEach(el => { el.innerHTML = t(el.dataset.i18n); });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.i18nAria)));
+    document.querySelector('.wordmark').setAttribute('aria-label', t('name'));
+    document.querySelectorAll('[data-language]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.language === language)));
+    renderCases(); renderExperience(openRoles); renderStack(); renderBackground(); updateThemeLabel();
+    if (activeCase) renderCase(activeCase);
   }
 
-
-  function escapeHtml(s) {
-    return String(s ?? "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
+  function showToast(message) {
+    clearTimeout(toastTimer);
+    $('#toast').textContent = message;
+    $('#toast').classList.add('visible');
+    toastTimer = setTimeout(() => $('#toast').classList.remove('visible'), 4200);
   }
 
-  function mkItemNode(item) {
-    const el = document.createElement("div");
-    el.className = "item";
-    el.dataset.key = item.key;
+  document.querySelectorAll('[data-language]').forEach(button => button.addEventListener('click', () => {
+    language = button.dataset.language;
+    storage.set('resume-language', language);
+    const url = new URL(location.href);
+    url.searchParams.set('lang', language);
+    history.replaceState(null, '', url);
+    render();
+  }));
 
-    const isUrlIcon = typeof item.icon === "string" && item.icon.startsWith("http");
+  const preferredDark = matchMedia('(prefers-color-scheme: dark)').matches;
+  const storedTheme = storage.get('resume-theme');
+  document.documentElement.dataset.theme = ['light', 'dark'].includes(storedTheme) ? storedTheme : preferredDark ? 'dark' : 'light';
+  $('#theme-button').addEventListener('click', () => {
+    const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = theme;
+    storage.set('resume-theme', theme);
+    updateThemeLabel();
+  });
 
-    el.innerHTML = `
-    <div class="icon">
-      ${
-      isUrlIcon
-        ? `<img src="${escapeHtml(item.icon)}" alt="" loading="lazy" />`
-        : escapeHtml(item.icon)
-    }
-    </div>
-    <div class="label">${escapeHtml(item.label).replaceAll("\n", "<br/>")}</div>
-    <div class="sub">${escapeHtml(item.note || "")}</div>
-  `;
+  $('#impact-cards').addEventListener('click', event => {
+    const button = event.target.closest('[data-case]');
+    if (!button) return;
+    activeCase = button.dataset.case;
+    renderCase(activeCase);
+    $('#case-dialog').showModal();
+    document.body.classList.add('dialog-open');
+  });
+  $('#close-dialog').addEventListener('click', () => $('#case-dialog').close());
+  $('#case-dialog').addEventListener('click', event => {
+    const bounds = $('#case-dialog').getBoundingClientRect();
+    if (event.target === $('#case-dialog') && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) $('#case-dialog').close();
+  });
+  $('#case-dialog').addEventListener('close', () => { activeCase = null; document.body.classList.remove('dialog-open'); });
+  $('#stack-filters').addEventListener('click', event => {
+    const button = event.target.closest('[data-filter]');
+    if (!button) return;
+    filter = button.dataset.filter;
+    renderStack();
+    document.querySelector(`[data-filter="${filter}"]`).focus({ preventScroll: true });
+  });
 
-    return el;
-  }
-
-
-  // ===== Pool =====
-  let pool = [];
-
-  function renderPool() {
-    reelEl.innerHTML = "";
-    for (const it of pool) reelEl.appendChild(mkItemNode(it));
-  }
-
-  // Важно: gap лучше держать константой (в Telegram WebView computed gap иногда странный)
-  const GAP = 12;
-
-  function measure() {
-    const first = reelEl.querySelector(".item");
-    const itemW = first ? first.getBoundingClientRect().width : 132;
-    return {itemW, step: itemW + GAP};
-  }
-
-  function getCenteredItem() {
-    const viewportRect = viewportEl.getBoundingClientRect();
-    const cx = viewportRect.left + viewportRect.width / 2;
-
-    const items = Array.from(reelEl.querySelectorAll(".item"));
-    let best = null;
-    let bestDist = Infinity;
-
-    for (const it of items) {
-      const r = it.getBoundingClientRect();
-      const ic = r.left + r.width / 2;
-      const d = Math.abs(ic - cx);
-      if (d < bestDist) {
-        bestDist = d;
-        best = it;
-      }
-    }
-    return best;
-  }
-
-  function buildPreviewPool() {
-    pool = [];
-    let prevKey = null;
-    for (let i = 0; i < 28; i++) {
-      const it = pickRandomNoAdjacent(prevKey, ITEMS);
-      pool.push(it);
-      prevKey = it.key;
-    }
-    renderPool();
-    gsap.set(reelEl, {x: 0});
-  }
-
-  function pickRandomNoAdjacent(prevKey, items) {
-    if (!items.length) return null;
-    let cand;
-    let guard = 0;
-    do {
-      cand = items[Math.floor(Math.random() * items.length)];
-      guard++;
-    } while (cand.key === prevKey && guard < 50);
-    return cand;
-  }
-
-  // Делаем ОЧЕНЬ длинную ленту + "полосу" цели, чтобы 100% попасть
-  function buildPoolWithTarget(targetKey) {
-    pool = [];
-    const base = ITEMS.slice();
-
-    const POOL_SIZE = 260;
-    let prevKey = null;
-
-    for (let i = 0; i < POOL_SIZE; i++) {
-      const it = pickRandomNoAdjacent(prevKey, base);
-      pool.push(it);
-      prevKey = it.key;
-    }
-
-    const stopIndex = 160 + Math.floor(Math.random() * 25); // 160..184
-    const targetItem = base.find(x => x.key === targetKey) ?? pool[stopIndex];
-
-    // "коридор" цели: без повторов по соседям делаем через чередование с filler
-    for (let k = 0; k < 10; k++) {
-      if (k % 2 === 0) {
-        pool[stopIndex + k] = targetItem;
-        prevKey = targetItem.key;
-      } else {
-        // filler — любой, но не равный targetItem и не равный предыдущему
-        let filler;
-        let guard = 0;
-        do {
-          filler = base[Math.floor(Math.random() * base.length)];
-          guard++;
-        } while ((filler.key === targetItem.key || filler.key === pool[stopIndex + k - 1].key) && guard < 100);
-        pool[stopIndex + k] = filler;
-        prevKey = filler.key;
-      }
-    }
-
-    // дополнительно: если случайно получился повтор на стыках (до/после коридора) — поправим
-    const fixAdj = (idxA, idxB) => {
-      if (idxA < 0 || idxB >= pool.length) return;
-      if (pool[idxA].key !== pool[idxB].key) return;
-      let rep, guard = 0;
-      do {
-        rep = base[Math.floor(Math.random() * base.length)];
-        guard++;
-      } while ((rep.key === pool[idxA].key || (idxB + 1 < pool.length && rep.key === pool[idxB + 1].key)) && guard < 100);
-      pool[idxB] = rep;
-    };
-    fixAdj(stopIndex - 1, stopIndex);
-    fixAdj(stopIndex + 9, stopIndex + 10);
-
-    renderPool();
-    gsap.set(reelEl, {x: 0});
-
-    return stopIndex + 4; // целимся ближе к центру коридора
-  }
-
-  async function spinToIndex(index) {
-    spinning = true;
-    btnSpin.disabled = true;
-
-    // снять прошлую подсветку
-    reelEl.querySelectorAll(".item.win").forEach(el => el.classList.remove("win"));
-
-    const viewportW = viewportEl.getBoundingClientRect().width;
-    const centerX = viewportW / 2;
-
-    const children = Array.from(reelEl.children);
-    const target = children[index];
-    if (!target) {
-      spinning = false;
-      btnSpin.disabled = false;
-      return null;
-    }
-
-    // Стабильно: offsetLeft/offsetWidth, не зависит от текущего transform
-    const targetCenter = target.offsetLeft + (target.offsetWidth / 2);
-
-    // finalX — ставим target по центру маркера
-    let finalX = centerX - targetCenter;
-
-    // Ограничим, чтобы лента не заканчивалась
-    const reelWidth = reelEl.scrollWidth;
-    const minX = viewportW - reelWidth; // максимально влево
-    const maxX = 0;                    // максимально вправо
-    finalX = Math.max(minX, Math.min(maxX, finalX));
-
-    // overshoot — для драмы, но не уезжаем дальше minX
-    const desiredOvershoot = viewportW * 2.5; // меняй 2.0..4.0 под вкус
-    let fastX = finalX - desiredOvershoot;
-    if (fastX < minX) fastX = minX;
-
-    await new Promise((resolve) => {
-      gsap.timeline({onComplete: resolve})
-        // плавный разгон
-        .to(reelEl, {
-          x: finalX,
-          duration: 6.0,
-          ease: "expo.out"
-        });
-    });
-
-    // Реальный элемент под маркером (то, что человек видит)
-    const centered = getCenteredItem();
-    if (centered) {
-      centered.classList.add("win");
-      gsap.fromTo(centered, {scale: 1}, {scale: 1.04, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.out"});
-    }
-
-    try {
-      tg?.HapticFeedback?.impactOccurred?.("medium");
-    } catch (_) {
-    }
-
-    if (window.confetti) {
-      window.confetti({
-        particleCount: 60,
-        spread: 55,
-        startVelocity: 26,
-        origin: {x: 0.5, y: 0.20}
+  $('#share-button').addEventListener('click', async () => {
+    const url = new URL('https://binocla.github.io/');
+    url.searchParams.set('lang', language);
+    try { await navigator.clipboard.writeText(url.href); showToast(t('copied')); }
+    catch { showToast(t('copyFailed')); }
+  });
+  $('#print-button').addEventListener('click', () => { showToast(t('printHint')); window.print(); });
+  let printOpenRoles = [];
+  window.addEventListener('beforeprint', () => {
+    printOpenRoles = [...document.querySelectorAll('details')].filter(el => !el.open);
+    document.querySelectorAll('details').forEach(el => { el.open = true; });
+  });
+  window.addEventListener('afterprint', () => { printOpenRoles.forEach(el => { el.open = false; }); });
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          document.querySelectorAll('nav a').forEach(link => link.classList.toggle('active', link.hash === `#${entry.target.id}`));
+        }
       });
-    }
-
-    spinning = false;
-    btnSpin.disabled = false;
-
-    return centered?.dataset?.key || null;
+    }, { rootMargin: '-15% 0px -55% 0px', threshold: 0 });
+    ['impact', 'experience', 'stack', 'contact'].forEach(id => observer.observe(document.getElementById(id)));
   }
-
-  // ===== Events =====
-  btnSpin.addEventListener("click", async () => {
-    if (spinning) return;
-    hideResult();
-    setStatus("");
-
-    const pwd = norm(inpPwd.value);
-    if (!pwd) return setStatus("Введи пароль 🙂", "err");
-    if (usedPasswords.has(pwd)) return setStatus("Этот пароль уже использовали. Нужен другой 😉", "err");
-
-    const targetKey = PASSWORD_TO_KEY.get(pwd);
-    if (!targetKey) return setStatus("Пароль не подходит. Попробуй ещё 🙂", "err");
-
-    usedPasswords.add(pwd);
-    inpPwd.value = "";
-
-    const stopIndex = buildPoolWithTarget(targetKey);
-    const realKey = await spinToIndex(stopIndex);
-
-    // Показываем то, что реально встало по центру (и под win-рамкой)
-    const item = ITEMS.find(x => x.key === realKey) || ITEMS.find(x => x.key === targetKey);
-    if (item) showResult(item);
-
-    setStatus("Открыто ✨", "ok");
-    try {
-      tg?.HapticFeedback?.notificationOccurred?.("success");
-    } catch (_) {
-    }
-  });
-
-  inpPwd.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") btnSpin.click();
-  });
-
-  btnOk?.addEventListener("click", () => hideResult());
-
-  // ===== INIT =====
-  hideResult();
-  buildPreviewPool();
-  setStatus("Пароль узнавай у Сережи", null);
+  render();
 })();

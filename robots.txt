@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://binocla.github.io/sitemap.xml
