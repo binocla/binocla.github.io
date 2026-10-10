@@ -93,9 +93,8 @@
     render();
   }));
 
-  const preferredDark = matchMedia('(prefers-color-scheme: dark)').matches;
   const storedTheme = storage.get('resume-theme');
-  document.documentElement.dataset.theme = ['light', 'dark'].includes(storedTheme) ? storedTheme : preferredDark ? 'dark' : 'light';
+  document.documentElement.dataset.theme = ['light', 'dark'].includes(storedTheme) ? storedTheme : 'dark';
   $('#theme-button').addEventListener('click', () => {
     const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
     document.documentElement.dataset.theme = theme;
