@@ -1,6 +1,3 @@
-/* Public resume content from the supplied CV, updated 8 October 2026,
-   and the user's engineering discussions for the current Sber role.
-   Current work describes contributions without unverified deployment or metrics. */
 'use strict';
 const bilingual = (ru, en) => ({ ru, en });
 const resume = {

@@ -9,6 +9,7 @@
   --accent: #3f6256;
   --page: 1040px;
   --lens-opacity: .8;
+  --lens-blend: multiply;
   color-scheme: light;
 }
 [data-theme="dark"] {
@@ -18,7 +19,8 @@
   --line: #303535;
   --soft: #222626;
   --accent: #a2bfb2;
-  --lens-opacity: .65;
+  --lens-opacity: .95;
+  --lens-blend: screen;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -68,7 +70,6 @@ nav a.active { color: var(--ink); }
 .icon-button { display: grid; place-items: center; width: 28px; height: 28px; font-size: 19px; background: transparent; border-radius: 4px; }
 .icon-button:hover { background: var(--soft); }
 .hero { position: relative; isolation: isolate; display: grid; grid-template-columns: 1.7fr 1fr; align-items: center; gap: 50px; padding: 54px 0; }
-/* Compact glass lenses: soft chromatic rims, slow transform-only motion. */
 .hero-ambient {
   position: absolute;
   inset: 0 -18px;
@@ -76,57 +77,17 @@ nav a.active { color: var(--ink); }
   overflow: hidden;
   pointer-events: none;
   border-radius: 14px;
-  mask-image: radial-gradient(ellipse at center, #000 45%, transparent 85%);
+  mix-blend-mode: var(--lens-blend);
 }
 .prism-lens {
   position: absolute;
-  width: 220px;
-  height: 160px;
-  left: 56%;
-  top: 2%;
-  border-radius: 50%;
+  width: 240px;
+  height: 240px;
+  left: 54%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   opacity: var(--lens-opacity);
-  background:
-    radial-gradient(ellipse at 46% 49%, transparent 61%, rgb(231 119 147 / .16) 65%, transparent 70%),
-    radial-gradient(ellipse at 51% 46%, transparent 61%, rgb(122 191 169 / .16) 65%, transparent 70%),
-    radial-gradient(ellipse at 54% 52%, transparent 61%, rgb(116 154 233 / .19) 65%, transparent 70%),
-    radial-gradient(ellipse at 40% 35%, rgb(148 170 231 / .06), transparent 68%);
-  filter: blur(1.5px);
-  animation: lens-drift 28s ease-in-out infinite alternate;
-}
-.prism-lens::before {
-  content: "";
-  position: absolute;
-  inset: 17%;
-  border-radius: inherit;
-  background: conic-gradient(from 35deg, rgb(241 137 162 / .15), rgb(124 187 171 / .15), rgb(121 151 228 / .18), rgb(241 137 162 / .15));
-  mask-image: radial-gradient(ellipse, transparent 60%, #000 67%, transparent 75%);
-}
-.prism-lens:nth-child(2) {
-  width: 160px;
-  height: 190px;
-  left: 37%;
-  top: 40%;
-  animation-name: lens-drift-secondary;
-  animation-duration: 34s;
-  animation-delay: -11s;
-}
-.prism-lens:nth-child(3) {
-  width: 130px;
-  height: 110px;
-  left: 81%;
-  top: 52%;
-  animation-duration: 40s;
-  animation-delay: -17s;
-  animation-direction: alternate-reverse;
-}
-@keyframes lens-drift {
-  from { transform: translate3d(-18px, 8px, 0) rotate(-16deg); }
-  to { transform: translate3d(36px, 28px, 0) rotate(14deg); }
-}
-@keyframes lens-drift-secondary {
-  from { transform: translate3d(12px, 12px, 0) rotate(18deg); }
-  to { transform: translate3d(-25px, -22px, 0) rotate(-12deg); }
+  mask-image: radial-gradient(circle, #000 48%, transparent 72%);
 }
 .hero h1 { font-size: 40px; line-height: 1.2; letter-spacing: -1.5px; font-weight: 500; }
 .hero-role { margin-top: 11px; color: var(--ink); font-size: 18px; }
@@ -221,6 +182,7 @@ dialog section p { font-size: 15px; line-height: 1.8; }
   nav { gap: 17px; }
   .hero { gap: 28px; grid-template-columns: 1.5fr 1fr; }
   .hero h1 { font-size: 34px; }
+  .prism-lens { width: 200px; height: 200px; left: 53%; opacity: calc(var(--lens-opacity) * .75); }
   .profile-facts { padding-left: 22px; }
   .profile-facts dl > div { flex-direction: column; gap: 0; padding: 5px 0; }
   .profile-stack { font-size: 12px; }
@@ -236,9 +198,7 @@ dialog section p { font-size: 15px; line-height: 1.8; }
   nav a { font-size: 13px; }
   .header-controls { gap: 10px; }
   .hero { grid-template-columns: 1fr; padding: 32px 0; gap: 24px; }
-  .prism-lens { width: 160px; height: 130px; left: 48%; top: 2%; }
-  .prism-lens:nth-child(2) { width: 120px; height: 150px; left: 10%; top: 39%; }
-  .prism-lens:nth-child(3) { width: 95px; height: 90px; left: 65%; top: 67%; }
+  .prism-lens { width: 156px; height: 156px; left: auto; right: -20px; top: 76px; transform: none; opacity: calc(var(--lens-opacity) * .55); }
   .hero h1 { font-size: 31px; letter-spacing: -1px; }
   .hero-role { font-size: 16px; margin-top: 8px; }
   .hero-description { font-size: 16px; margin-top: 13px; }

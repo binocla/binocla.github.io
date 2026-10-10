@@ -3,7 +3,7 @@
   const $ = (selector) => document.querySelector(selector);
   const storage = {
     get(key) { try { return localStorage.getItem(key); } catch { return null; } },
-    set(key, value) { try { localStorage.setItem(key, value); } catch { /* Works without storage. */ } }
+    set(key, value) { try { localStorage.setItem(key, value); } catch {} }
   };
   const requestedLanguage = new URLSearchParams(location.search).get('lang');
   const savedLanguage = storage.get('resume-language');
@@ -13,7 +13,6 @@
   let toastTimer;
   const text = (value) => typeof value === 'string' ? value : value[language];
   const t = (key) => translations[language][key];
-  // Text in resume.js is curated source content, never user/URL HTML.
   const escape = (value) => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
   const tags = (items) => `<ul class="tech-tags">${items.map(item => `<li>${escape(item)}</li>`).join('')}</ul>`;
 
