@@ -37,7 +37,7 @@ Configuration reference: [GitHub Pages publishing sources](https://docs.github.c
 Asset URLs in `index.html` include content-based version keys. Refresh these when editing CSS, JavaScript or the social image to avoid stale CDN/browser assets during deployment.
 
 Career facts are based on the supplied CV, updated **8 October 2026**.
-The current Sber role has a short description until more public detail is provided.
+The current Sber role also draws on engineering tasks discussed with the user: NRT processing, PostgreSQL DLQ and cleanup, incident diagnosis, CI/CD and technical hiring. It describes contributions without implying unverified production deployments or inventing metrics. Internal project names and infrastructure details are omitted.
 Metrics refer to their named projects; performance and memory figures are combined into one Sophia Technologies migration entry.
 Education is accurately marked as incomplete; no completed degree is implied.
 The source PDF, phone number, birth date and precise residential location are not included.

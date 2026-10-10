@@ -32,8 +32,8 @@
       <article class="experience-item ${job.current ? 'current-job' : ''}" id="job-${job.id}">
         <div class="job-date"><span class="timeline-dot" aria-hidden="true"></span><span>${escape(text(job.period))}</span>${job.current ? `<span class="current-badge">${t('current')}</span>` : ''}</div>
         <div class="job-body"><div class="job-heading"><h3>${escape(text(job.company))}</h3><span class="job-domain">${escape(text(job.domain))}</span></div>
-          <p class="job-role">${escape(text(job.role))}</p>${job.current ? '' : `<p class="job-summary">${escape(text(job.summary))}</p>`}
-          ${job.current ? '' : `<details data-role="${job.id}" ${openRoles.has(job.id) ? 'open' : ''}><summary>${t('details')}<span aria-hidden="true">+</span></summary><div class="job-details"><ul class="job-bullets">${job.bullets.map(item => `<li>${escape(text(item))}</li>`).join('')}</ul>${tags(job.tech)}</div></details>`}
+          <p class="job-role">${escape(text(job.role))}</p><p class="job-summary">${escape(text(job.summary))}</p>
+          <details data-role="${job.id}" ${openRoles.has(job.id) ? 'open' : ''}><summary>${t('details')}<span aria-hidden="true">+</span></summary><div class="job-details"><ul class="job-bullets">${job.bullets.map(item => `<li>${escape(text(item))}</li>`).join('')}</ul>${tags(job.tech)}</div></details>
         </div>
       </article>`).join('');
   }
