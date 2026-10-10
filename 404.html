@@ -1,5 +1,31 @@
 <!doctype html>
-<html lang="ru">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#161819"><meta name="robots" content="noindex"><title>404 Not Found</title><link rel="icon" href="/assets/favicon.svg"><style>html{color-scheme:dark}body{margin:0;background:#161819;color:#e7e8e5;min-height:100dvh;display:grid;place-items:center;font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}main{padding:30px;max-width:500px}small{font-family:monospace;color:#a2bfb2;letter-spacing:2px}h1{font:54px/1.1 Georgia,serif;margin:20px 0}p{color:#a2a7a6}a{display:inline-block;margin:15px 12px 0 0;padding:12px 20px;background:#222626;color:#e7e8e5;text-decoration:none;border-radius:6px;font-size:13px}a:focus-visible{outline:3px solid #a2bfb2;outline-offset:5px}</style></head>
-<body><main><small>404 / PAGE NOT FOUND</small><h1>Кажется, вы свернули не туда.</h1><p>Этой страницы больше нет. Резюме на главной.</p><p>This page is no longer here. Visit resume instead.</p><a href="/?lang=ru">Резюме на русском ↗</a><a href="/?lang=en">Resume in English ↗</a></main></body>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#161819">
+  <meta name="robots" content="noindex">
+  <title>404 Not Found</title>
+  <link rel="icon" href="/assets/favicon.svg">
+  <script src="/theme.js?v=dea21d969a"></script>
+  <link rel="stylesheet" href="/style.css?v=179e9e4d85">
+  <style>
+    body { min-height: 100dvh; display: grid; place-items: center; }
+    .not-found { width: auto; margin: 0; padding: 30px; max-width: 500px; }
+    .not-found small { font-family: monospace; color: var(--accent); letter-spacing: 2px; }
+    .not-found h1 { font: 54px/1.1 Georgia, serif; margin: 20px 0; }
+    .not-found p { margin: 16px 0; }
+    .not-found a { display: inline-block; margin: 15px 12px 0 0; padding: 12px 20px; background: var(--soft); border-radius: 6px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <main class="not-found">
+    <small>404 / PAGE NOT FOUND</small>
+    <h1>Кажется, вы свернули не туда.</h1>
+    <p>Этой страницы больше нет. Резюме на главной.</p>
+    <p>This page is no longer here. Visit resume instead.</p>
+    <a href="/?lang=ru">Резюме на русском ↗</a>
+    <a href="/?lang=en">Resume in English ↗</a>
+  </main>
+</body>
 </html>

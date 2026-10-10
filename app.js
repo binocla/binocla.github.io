@@ -93,8 +93,9 @@
     render();
   }));
 
-  const storedTheme = storage.get('resume-theme');
-  document.documentElement.dataset.theme = ['light', 'dark'].includes(storedTheme) ? storedTheme : 'dark';
+  window.addEventListener('storage', event => {
+    if (event.key === 'resume-theme' || event.key === null) updateThemeLabel();
+  });
   $('#theme-button').addEventListener('click', () => {
     const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
     document.documentElement.dataset.theme = theme;
