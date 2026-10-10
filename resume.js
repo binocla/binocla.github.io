@@ -6,7 +6,7 @@ const bilingual = (ru, en) => ({ ru, en });
 const resume = {
   jobs: [
     { id: 'sber', company: bilingual('Сбер', 'Sber'), period: bilingual('Май 2026 — настоящее время', 'May 2026 — present'), role: bilingual('Руководитель группы разработки', 'Java Team Lead'), domain: bilingual('Финтех', 'Fintech'), current: true,
-      summary: bilingual('Техническое лидерство и разработка систем потоковой обработки данных: Java, Apache Flink, Kafka и PostgreSQL.', 'Technical leadership and development of stream-processing systems with Java, Apache Flink, Kafka and PostgreSQL.'),
+      summary: bilingual('Техническое лидерство и разработка систем потоковой обработки данных: Java, AI, Specification Driven Development, Apache Flink, Kafka и PostgreSQL.', 'Technical leadership and development of stream-processing systems with Java, AI, Specification Driven Development, Apache Flink, Kafka and PostgreSQL.'),
       bullets: [
         bilingual('Развиваю NRT-сервисы на Apache Flink: сверяю реализацию с бизнес-требованиями, прорабатываю обработку событий и актуализирую технические спецификации.', 'Develop near-real-time services with Apache Flink, align implementations with business requirements, refine event processing and maintain technical specifications.'),
         bilingual('Разрабатываю общие библиотеки валидации данных и хранения ошибочных событий (DLQ) в PostgreSQL: идемпотентная запись, метаданные источника и подготовка к повторной обработке.', 'Develop shared libraries for data validation and PostgreSQL dead-letter storage (DLQ), including idempotent writes, source metadata and support for replay.'),
