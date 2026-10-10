@@ -6,7 +6,7 @@ Vanilla HTML / CSS / JavaScript. No dependencies or build step.
 - Russian: `https://binocla.github.io/?lang=ru`
 - English: `https://binocla.github.io/?lang=en`
 - Language and light/dark theme are remembered locally.
-- Achievement cards open case details; career entries expand; the stack filters by focus area.
+- Result rows open case details; career entries expand; the stack filters by focus area.
 - “Save as PDF” opens the browser print dialog. Print CSS includes every career entry and technology category, even when collapsed or filtered on screen.
 - “Copy profile link” copies a public URL in the selected language.
 
@@ -36,7 +36,7 @@ Configuration reference: [GitHub Pages publishing sources](https://docs.github.c
 
 Career facts are based on the supplied CV, updated **8 October 2026**.
 The current Sber role has a short description until more public detail is provided.
-Metrics refer to their named projects; performance and memory figures describe the same Sophia Technologies migration.
+Metrics refer to their named projects; performance and memory figures are combined into one Sophia Technologies migration entry.
 Education is accurately marked as incomplete; no completed degree is implied.
 The source PDF, phone number, birth date and precise residential location are not included.
 

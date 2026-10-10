@@ -19,25 +19,21 @@
 
   function renderCases() {
     $('#impact-cards').innerHTML = resume.cases.map(item => `
-      <button type="button" class="impact-card" data-case="${item.id}" aria-haspopup="dialog">
-        <span class="card-top"><span class="mono">${item.number}</span><span class="card-arrow" aria-hidden="true">↗</span></span>
-        <span class="metric ${item.id === 'mentoring' ? 'metric-word' : ''}">${item.metric}</span>
-        <span class="metric-label">${escape(text(item.label))}</span>
-        <span class="card-title">${escape(text(item.title))}</span>
-        <span class="card-source">${escape(text(item.source))}</span>
-        <span class="case-more">${t('caseMore')} <span aria-hidden="true">→</span></span>
+      <button type="button" class="impact-card" data-case="${item.id}" aria-haspopup="dialog" aria-label="${escape(text(item.title))} — ${t('caseMore')}">
+        <span class="case-heading"><span class="card-title">${escape(text(item.title))}</span><span class="card-source">${escape(text(item.source))}</span></span>
+        <span class="case-result"><span class="metric">${item.metric}</span><span class="metric-label">${escape(text(item.label))}</span></span>
+        <span class="card-arrow" aria-hidden="true">+</span>
         <span class="print-case">${escape(text(item.result))}</span>
       </button>`).join('');
   }
 
   function renderExperience(openRoles) {
-    const initialRender = !$('#experience-list').children.length;
-    $('#experience-list').innerHTML = resume.jobs.map((job, index) => `
+    $('#experience-list').innerHTML = resume.jobs.map(job => `
       <article class="experience-item ${job.current ? 'current-job' : ''}" id="job-${job.id}">
         <div class="job-date"><span class="timeline-dot" aria-hidden="true"></span><span>${escape(text(job.period))}</span>${job.current ? `<span class="current-badge">${t('current')}</span>` : ''}</div>
         <div class="job-body"><div class="job-heading"><h3>${escape(text(job.company))}</h3><span class="job-domain">${escape(text(job.domain))}</span></div>
-          <p class="job-role">${escape(text(job.role))}</p><p class="job-summary">${escape(text(job.summary))}</p>
-          ${job.current ? tags(job.tech) : `<details data-role="${job.id}" ${openRoles.has(job.id) || (initialRender && index === 1) ? 'open' : ''}><summary>${t('details')}<span aria-hidden="true">+</span></summary><div class="job-details"><ul class="job-bullets">${job.bullets.map(item => `<li>${escape(text(item))}</li>`).join('')}</ul>${tags(job.tech)}</div></details>`}
+          <p class="job-role">${escape(text(job.role))}</p>${job.current ? '' : `<p class="job-summary">${escape(text(job.summary))}</p>`}
+          ${job.current ? '' : `<details data-role="${job.id}" ${openRoles.has(job.id) ? 'open' : ''}><summary>${t('details')}<span aria-hidden="true">+</span></summary><div class="job-details"><ul class="job-bullets">${job.bullets.map(item => `<li>${escape(text(item))}</li>`).join('')}</ul>${tags(job.tech)}</div></details>`}
         </div>
       </article>`).join('');
   }
@@ -45,13 +41,12 @@
   function renderStack() {
     $('#stack-filters').setAttribute('aria-label', t('stackFilter'));
     const filters = [{ id: 'all', label: t('all') }, ...resume.stack];
-    $('#stack-filters').innerHTML = filters.map(item => `<button type="button" data-filter="${item.id}" aria-pressed="${filter === item.id}">${escape(text(item.label))}${item.id === 'all' ? '<span aria-hidden="true"> ↗</span>' : ''}</button>`).join('');
+    $('#stack-filters').innerHTML = filters.map(item => `<button type="button" data-filter="${item.id}" aria-pressed="${filter === item.id}">${escape(text(item.label))}</button>`).join('');
     $('#stack-content').innerHTML = resume.stack.map(item => `
-      <article class="stack-card" ${filter !== 'all' && filter !== item.id ? 'hidden' : ''}><span class="stack-icon mono" aria-hidden="true">${item.icon}</span><h3>${escape(text(item.title))}</h3><p>${escape(text(item.description))}</p>${tags(item.tech)}<div class="stack-context"><span class="mono">${t('applied')}</span><span>${escape(text(item.context))}</span></div></article>`).join('');
+      <article class="stack-card" ${filter !== 'all' && filter !== item.id ? 'hidden' : ''}><h3>${escape(text(item.title))}</h3><p>${escape(text(item.description))}</p>${tags(item.tech)}<p class="stack-context">${escape(text(item.context))}</p></article>`).join('');
   }
 
   function renderBackground() {
-    $('#approach-items').innerHTML = resume.approach.map((item, index) => `<article><span class="mono approach-number">0${index + 1}</span><div><h3>${escape(text(item.title))}</h3><p>${escape(text(item.text))}</p></div></article>`).join('');
     $('#background-content').innerHTML = `<div class="education-list"><h3 class="mono background-label">${t('education')}</h3>${resume.education.map(item => `<article><span class="mono education-year">${item.year}</span><div><h4>${escape(text(item.name))}</h4><p>${escape(text(item.faculty))}</p><span class="education-status">${t('incomplete')}</span></div></article>`).join('')}</div><div class="spoken-languages"><h3 class="mono background-label">${t('langTitle')}</h3><p><span>${t('russian')}</span><span>${t('native')}</span></p><p><span>${t('english')}</span><span>${t('advanced')}</span></p></div>`;
   }
 
@@ -65,7 +60,7 @@
     const next = document.documentElement.dataset.theme === 'dark' ? t('light') : t('dark');
     $('#theme-button').setAttribute('aria-label', next);
     $('#theme-button').title = next;
-    $('meta[name="theme-color"]').content = document.documentElement.dataset.theme === 'dark' ? '#151c25' : '#f5f4f0';
+    $('meta[name="theme-color"]').content = document.documentElement.dataset.theme === 'dark' ? '#161819' : '#fafaf8';
   }
 
   function render() {

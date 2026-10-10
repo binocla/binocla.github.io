@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f5f4f0">
+  <meta name="theme-color" content="#fafaf8">
   <meta name="description" content="Сергей Шамов — Java Team Lead. Распределённые системы, микросервисы и развитие инженерных команд. Опыт: Сбер, ЛАНИТ, Sophia Technologies.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Сергей Шамов · Java Team Lead">
-  <meta property="og:description" content="От архитектуры до команды. Java, Quarkus, Spring Boot, Kafka, PostgreSQL, Kubernetes.">
+  <meta property="og:description" content="Java Team Lead · Сбер. Java, Quarkus, Spring Boot, Kafka, PostgreSQL, Kubernetes.">
   <meta property="og:url" content="https://binocla.github.io/">
   <meta property="og:image" content="https://binocla.github.io/assets/social.png">
   <meta property="og:image:width" content="1200">
@@ -23,10 +23,10 @@
 <body>
   <a class="skip-link" href="#main" data-i18n="skip">К содержимому</a>
   <header class="site-header">
-    <a class="wordmark" href="#" aria-label="Сергей Шамов"><span class="monogram">s<span>·</span>s</span><span class="wordmark-name" data-i18n="name">Сергей Шамов</span></a>
+    <a class="wordmark" href="#" aria-label="Сергей Шамов"><span class="wordmark-name">binocla</span></a>
     <nav aria-label="Навигация" data-i18n-aria="navigation">
-      <a href="#impact" data-i18n="navImpact">Результаты</a>
       <a href="#experience" data-i18n="navExperience">Опыт</a>
+      <a href="#impact" data-i18n="navImpact">Результаты</a>
       <a href="#stack" data-i18n="navStack">Стек</a>
       <a href="#contact" data-i18n="navContact">Контакты</a>
     </nav>
@@ -41,34 +41,58 @@
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="eyebrow"><span class="status-dot"></span> JAVA TEAM LEAD <span class="eyebrow-divider">/</span> <span data-i18n="heroCompany">Сбер</span></p>
-        <h1 id="hero-title"><span data-i18n="firstName">Сергей</span><br><span class="surname" data-i18n="lastName">Шамов<span class="accent-dot">.</span></span></h1>
-        <p class="hero-statement" data-i18n="heroStatement">От архитектуры<br>до сильной команды.</p>
-        <p class="hero-description" data-i18n="heroDescription">Проектирую распределённые backend-системы на Java, ускоряю сервисы и помогаю разработчикам расти.</p>
-        <div class="hero-actions"><a class="button primary" href="https://t.me/binocla" target="_blank" rel="noopener noreferrer"><span data-i18n="talk">Обсудить сотрудничество</span><span aria-hidden="true">↗</span></a><a class="button secondary" href="#experience"><span data-i18n="explore">Посмотреть опыт</span><span aria-hidden="true">↓</span></a></div>
-        <div class="hero-meta"><span><span aria-hidden="true">◎</span> <span data-i18n="location">Москва · удалённо</span></span><span><span aria-hidden="true">↔</span> <span data-i18n="languagesShort">Русский / English C1</span></span></div>
-      </div>
-      <div class="hero-visual" aria-hidden="true">
-        <div class="diagram-topline"><span>THE BACKEND PERSPECTIVE</span><span>01 / SYSTEM</span></div>
-        <div class="system-diagram">
-          <div class="diagram-orbit orbit-one"></div><div class="diagram-orbit orbit-two"></div>
-          <svg class="diagram-lines" viewBox="0 0 460 410" fill="none"><path d="M230 72V156M98 212H161M299 212H364M230 268V344"/><path class="signal" d="M230 72V156M98 212H161M299 212H364M230 268V344"/></svg>
-          <div class="diagram-node node-top"><span class="node-icon">↗</span><span>API / BFF</span></div>
-          <div class="diagram-node node-left"><span class="node-icon">≋</span><span>EVENTS</span></div>
-          <div class="diagram-core"><span class="core-caption">BUILT AROUND</span><span class="core-title">Java</span><span class="core-detail">clarity. scale. people.</span></div>
-          <div class="diagram-node node-right"><span class="node-icon">▤</span><span>DATA</span></div>
-          <div class="diagram-node node-bottom"><span class="node-icon">⌘</span><span>PLATFORM</span></div>
+        <h1 id="hero-title" data-i18n="name">Сергей Шамов</h1>
+        <p class="hero-role">Java Team Lead · <span data-i18n="heroCompany">Сбер</span></p>
+        <p class="hero-description" data-i18n="heroDescription">Java backend, распределённые системы и микросервисы.</p>
+        <p class="hero-meta" data-i18n="location">Москва · удалённо</p>
+        <div class="hero-actions">
+          <a href="https://t.me/binocla" target="_blank" rel="noopener noreferrer">Telegram ↗</a>
+          <a href="mailto:binocladev@gmail.com">Email ↗</a>
+          <a href="#experience" data-i18n="explore">Опыт ↓</a>
         </div>
-        <div class="diagram-bottomline"><span><span class="diagram-dot"></span> ARCHITECTURE → DELIVERY</span><span>JAVA · KAFKA · K8S</span></div>
       </div>
-      <div class="hero-footnote"><span data-i18n="heroFootnote">Распределённые системы. Осмысленные решения. Люди.</span><span class="mono">SCROLL TO EXPLORE ↓</span></div>
+      <aside class="profile-facts" aria-label="Кратко" data-i18n-aria="profileSummary">
+        <dl>
+          <div><dt data-i18n="sinceLabel">В разработке</dt><dd data-i18n="sinceValue">с 2021 года</dd></div>
+          <div><dt data-i18n="focusLabel">Специализация</dt><dd>Java / Backend</dd></div>
+        </dl>
+        <p class="profile-stack">Java · Quarkus · Spring Boot · Kafka · PostgreSQL · Kubernetes</p>
+      </aside>
     </section>
-    <section class="section impact-section" id="impact" aria-labelledby="impact-title"><div class="section-heading"><p class="eyebrow" data-i18n="impactEyebrow">01 / ИЗМЕРИМЫЙ РЕЗУЛЬТАТ</p><h2 id="impact-title" data-i18n="impactTitle">Изменения, которые работают.</h2><p data-i18n="impactIntro">Несколько примеров того, что стоит за строчками резюме. Откройте карточку, чтобы узнать контекст.</p></div><div class="impact-grid" id="impact-cards"></div></section>
-    <section class="section experience-section" id="experience" aria-labelledby="experience-title"><div class="section-heading experience-heading"><div><p class="eyebrow" data-i18n="experienceEyebrow">02 / ПРОФЕССИОНАЛЬНЫЙ ПУТЬ</p><h2 id="experience-title" data-i18n="experienceTitle">От кода к техническому лидерству.</h2></div><p data-i18n="experienceIntro">Финтех, продуктовая разработка, туризм и IoT. В разработке с 2021 года.</p></div><div id="experience-list" class="experience-list"></div></section>
-    <section class="section stack-section" id="stack" aria-labelledby="stack-title"><div class="section-heading"><p class="eyebrow" data-i18n="stackEyebrow">03 / ИНЖЕНЕРНЫЙ ИНСТРУМЕНТАРИЙ</p><h2 id="stack-title" data-i18n="stackTitle">Стек под задачу.</h2><p data-i18n="stackIntro">Выберите направление. Технологии дополнены контекстом их применения.</p></div><div class="stack-filters" id="stack-filters" role="group"></div><div id="stack-content" class="stack-content" aria-live="polite" aria-atomic="true"></div></section>
-    <section class="section approach-section" id="approach" aria-labelledby="approach-title"><div class="approach-intro"><p class="eyebrow" data-i18n="approachEyebrow">04 / ПОДХОД К РАБОТЕ</p><h2 id="approach-title" data-i18n="approachTitle">Хороший backend —<br>больше, чем код.</h2><p data-i18n="approachIntro">Технические решения, прозрачные процессы и рост команды — части одной работы.</p></div><div id="approach-items" class="approach-items"></div></section>
-    <section class="section background-section" aria-labelledby="background-title"><div><p class="eyebrow" data-i18n="backgroundEyebrow">05 / ДОПОЛНИТЕЛЬНО</p><h2 id="background-title" data-i18n="backgroundTitle">Образование и языки.</h2></div><div id="background-content" class="background-content"></div></section>
-    <section class="contact-section" id="contact" aria-labelledby="contact-title"><div><p class="eyebrow" data-i18n="contactEyebrow">СЛЕДУЮЩИЙ ШАГ</p><h2 id="contact-title" data-i18n="contactTitle">Давайте познакомимся<span class="accent-dot">.</span></h2><p data-i18n="contactDescription">Роли Java Team Lead, backend-разработка и интересные инженерные задачи. Предпочитаю общаться в Telegram.</p><a class="contact-link" href="https://t.me/binocla" target="_blank" rel="noopener noreferrer">@binocla <span aria-hidden="true">↗</span></a></div><div class="contact-side"><a href="mailto:binocladev@gmail.com">binocladev@gmail.com <span aria-hidden="true">↗</span></a><a href="https://www.linkedin.com/in/binocla/" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span></a><a href="https://github.com/binocla" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a><div class="share-actions"><button type="button" id="share-button"><span data-i18n="share">Скопировать ссылку</span><span aria-hidden="true">↗</span></button><button type="button" id="print-button"><span data-i18n="print">Сохранить в PDF</span><span aria-hidden="true">↓</span></button></div></div></section>
+    <section class="section experience-section" id="experience" aria-labelledby="experience-title">
+      <div class="section-heading"><h2 id="experience-title" data-i18n="experienceTitle">Опыт работы</h2></div>
+      <div id="experience-list" class="experience-list"></div>
+    </section>
+    <section class="section impact-section" id="impact" aria-labelledby="impact-title">
+      <div class="section-heading"><h2 id="impact-title" data-i18n="impactTitle">Результаты</h2></div>
+      <div class="impact-list" id="impact-cards"></div>
+    </section>
+    <section class="section stack-section" id="stack" aria-labelledby="stack-title">
+      <div class="section-heading"><h2 id="stack-title" data-i18n="stackTitle">Стек</h2></div>
+      <div class="stack-filters" id="stack-filters" role="group"></div>
+      <div id="stack-content" class="stack-content" aria-live="polite" aria-atomic="true"></div>
+    </section>
+    <section class="section background-section" aria-labelledby="background-title">
+      <div class="section-heading"><h2 id="background-title" data-i18n="backgroundTitle">Образование и языки</h2></div>
+      <div id="background-content" class="background-content"></div>
+    </section>
+    <section class="section contact-section" id="contact" aria-labelledby="contact-title">
+      <div class="section-heading"><h2 id="contact-title" data-i18n="contactTitle">Контакты</h2></div>
+      <div class="contact-content">
+        <div class="contact-links">
+          <a href="https://t.me/binocla" target="_blank" rel="noopener noreferrer">Telegram · @binocla <span aria-hidden="true">↗</span></a>
+          <a href="mailto:binocladev@gmail.com">binocladev@gmail.com <span aria-hidden="true">↗</span></a>
+          <div class="social-links">
+            <a href="https://www.linkedin.com/in/binocla/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+            <a href="https://github.com/binocla" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+          </div>
+        </div>
+        <div class="share-actions">
+          <button type="button" id="share-button" data-i18n="share">Скопировать ссылку</button>
+          <button type="button" id="print-button" data-i18n="print">Сохранить в PDF</button>
+        </div>
+      </div>
+    </section>
     <noscript><p class="noscript-note">Java Team Lead в Сбере с мая 2026. Ранее: ЛАНИТ, Sophia Technologies, Турмашина, NAUMEN, Orion Innovation. Java, Quarkus, Spring Boot, PostgreSQL, Kafka, Kubernetes. Для просмотра подробностей и английской версии включите JavaScript. Связь: <a href="mailto:binocladev@gmail.com">binocladev@gmail.com</a>.</p></noscript>
   </main>
   <footer class="site-footer"><span>© <span id="footer-year">2026</span> <span data-i18n="name">Сергей Шамов</span></span><span data-i18n="updated">Резюме · октябрь 2026</span><a href="#" data-i18n="backTop">Наверх ↑</a></footer>

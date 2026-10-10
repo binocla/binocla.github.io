@@ -45,19 +45,15 @@ const resume = {
       ], tech: ['Java', 'GraalVM', 'Project Reactor', 'Mutiny', 'GraphQL', 'Docker', 'Helm', 'Tekton', 'GCP', 'AWS'] }
   ],
   cases: [
-    { id: 'performance', metric: '+40%', label: bilingual('производительность', 'system performance'), title: bilingual('Миграция на Quarkus', 'Migration to Quarkus'), source: 'Sophia Technologies · 2023–2024', number: '01',
+    { id: 'performance', metric: '+40% / −70%', label: bilingual('производительность / память и сборки', 'performance / memory & size'), title: bilingual('Миграция на Quarkus', 'Migration to Quarkus'), source: 'Sophia Technologies · 2023–2024', number: '01',
       intro: bilingual('Перевёл backend социальной платформы Vivo со Spring Boot на Quarkus и разделил монолит на 5 микросервисов.', 'Migrated the backend of the Vivo social platform from Spring Boot to Quarkus and split the monolith into 5 microservices.'),
       work: bilingual('Проектировал сервисы и взаимодействия, реализовывал реактивные потоки до базы данных, готовил Helm-чарты и окружение AWS.', 'Designed services and interactions, implemented reactive flows through to the database, and prepared Helm charts and AWS infrastructure.'),
       result: bilingual('Производительность системы выросла на 40%. Потребление памяти и размеры дистрибутивов снизились на 70%.', 'System performance increased by 40%. Memory consumption and distribution sizes decreased by 70%.'), tech: ['Quarkus', 'Java 21', 'Mutiny', 'AWS', 'Kubernetes'] },
-    { id: 'footprint', metric: '−70%', label: bilingual('память и размер сборок', 'memory & distribution sizes'), title: bilingual('Меньше ресурсов. Тот же продукт.', 'A smaller runtime footprint.'), source: 'Sophia Technologies · 2023–2024', number: '02',
-      intro: bilingual('Оптимизация потребления ресурсов в ходе той же миграции Vivo на Quarkus.', 'Resource optimization as part of the same Vivo migration to Quarkus.'),
-      work: bilingual('Перевёл сервисы на Quarkus, работал с реактивным доступом к данным и инфраструктурой Kubernetes / AWS.', 'Moved services to Quarkus and worked with reactive data access and Kubernetes / AWS infrastructure.'),
-      result: bilingual('Потребление памяти и размеры дистрибутивов уменьшились на 70%. Это результат миграции, представленной в соседнем кейсе, а не отдельный проект.', 'Memory consumption and distribution sizes decreased by 70%. This is an outcome of the migration in the previous case, rather than a separate project.'), tech: ['Quarkus', 'Mutiny', 'Docker', 'Kubernetes'] },
-    { id: 'bff', metric: '2', label: bilingual('BFF-микросервиса', 'BFF microservices'), title: bilingual('Backend для нескольких команд', 'Backend for multiple teams'), source: bilingual('ЛАНИТ · 2024–2026', 'LANIT · 2024–2026'), number: '03',
+    { id: 'bff', metric: '2', label: bilingual('BFF-микросервиса', 'BFF microservices'), title: bilingual('BFF для риск-менеджмента', 'Risk-management BFFs'), source: bilingual('ЛАНИТ · 2024–2026', 'LANIT · 2024–2026'), number: '03',
       intro: bilingual('В системе риск-менеджмента Сбербанка нескольким frontend-командам требовались BFF-сервисы.', 'Multiple frontend teams needed BFF services for Sber’s risk-management system.'),
       work: bilingual('Спроектировал и реализовал два BFF-микросервиса. Разработал общую библиотеку deep health checks и документировал интеграции и соглашения для разработчиков.', 'Designed and implemented two BFF microservices. Created a shared deep health-check library and documented integrations and developer conventions.'),
       result: bilingual('Оба BFF использовались несколькими frontend-командами. Библиотека health checks применялась в микросервисах разных команд.', 'Both BFFs served multiple frontend teams. The health-check library was used by microservices across teams.'), tech: ['Java', 'Spring Boot', 'PostgreSQL', 'REST', 'gRPC'] },
-    { id: 'mentoring', metric: 'Jr → Mid', label: bilingual('рост двух разработчиков', 'growth of two developers'), title: bilingual('Техническое лидерство через людей', 'Technical leadership through people'), source: bilingual('ЛАНИТ · 2024–2026', 'LANIT · 2024–2026'), number: '04',
+    { id: 'mentoring', metric: '2', label: bilingual('разработчика · Junior → Middle', 'developers · Junior → Middle'), title: bilingual('Менторство', 'Mentoring'), source: bilingual('ЛАНИТ · 2024–2026', 'LANIT · 2024–2026'), number: '04',
       intro: bilingual('Помимо backend-разработки, занимался наставничеством и выстраивал процессы разработки в команде.', 'Alongside backend development, mentored developers and established team development processes.'),
       work: bilingual('Наставлял двух Junior-разработчиков, писал Java Code Style и Code Conventions, технические статьи и выступал с докладом о Quarkus.', 'Mentored two Junior developers, wrote Java style and code conventions, authored technical articles and delivered a Quarkus talk.'),
       result: bilingual('Два разработчика выросли до уровня Middle. Технические знания были оформлены в соглашения и материалы для команды и внутреннего университета.', 'Two developers progressed to Middle level. Technical knowledge was captured in team conventions and internal university materials.'), tech: ['Mentoring', 'Code review', 'Java', 'Quarkus'] }
@@ -68,11 +64,6 @@ const resume = {
     { id: 'platform', label: bilingual('Платформа', 'Platform'), icon: '⌘', title: bilingual('Инфраструктура и доставка', 'Infrastructure & delivery'), description: bilingual('Контейнеризация, Helm-чарты, оркестрация и CI/CD. Настройка облачного окружения и Redis-кэша в AWS.', 'Containers, Helm charts, orchestration and CI/CD. Cloud infrastructure setup and Redis caching on AWS.'), tech: ['Kubernetes', 'Docker', 'OpenShift', 'Helm', 'AWS', 'GCP', 'Jenkins', 'Tekton', 'Knative', 'Istio', 'Maven', 'Gradle'], context: bilingual('Sophia Technologies · ЛАНИТ · Orion', 'Sophia Technologies · LANIT · Orion') },
     { id: 'quality', label: bilingual('Качество', 'Quality'), icon: '✓', title: bilingual('Качество и наблюдаемость', 'Quality & observability'), description: bilingual('Тестирование сервисов и интеграций, deep health checks, нагрузочная оптимизация и технические соглашения команды.', 'Service and integration testing, deep health checks, load-test optimization and team engineering conventions.'), tech: ['JUnit', 'Mockito', 'WireMock', 'RestAssured', 'OpenAPI', 'Keycloak', 'Security Quality Gate'], context: bilingual('ЛАНИТ · Sophia Technologies · Турмашина', 'LANIT · Sophia Technologies · Tourmachine') }
   ],
-  approach: [
-    { title: bilingual('Архитектура с контекстом', 'Architecture with context'), text: bilingual('Проектирую границы сервисов и интеграции, фиксирую решения в документации. Есть опыт разделения монолита на микросервисы и развития существующих систем.', 'Design service boundaries and integrations, and document decisions. Experienced in both splitting monoliths into microservices and evolving existing systems.') },
-    { title: bilingual('Производительность в деталях', 'Performance in the details'), text: bilingual('Работаю с SQL, индексами, N+1 и пулами потоков. Поддерживаю сервисы в нагрузочном тестировании и использую реактивный подход там, где он решает задачу.', 'Work with SQL, indexes, N+1 issues and thread pools. Support services during load testing and use reactive programming where it addresses the problem.') },
-    { title: bilingual('Рост команды и обмен знаниями', 'Team growth & shared knowledge'), text: bilingual('Менторство, конвенции разработки, технические статьи и выступления. Использую LLM-инструменты для ускорения разработки и анализа кода.', 'Mentoring, engineering conventions, technical writing and talks. Use LLM tools to accelerate development and code analysis.') }
-  ],
   education: [
     { year: '2024', name: bilingual('Саратовский государственный университет', 'Saratov State University'), faculty: bilingual('Факультет компьютерных наук и информационных технологий · программная инженерия', 'Faculty of Computer Science and Information Technology · Software Engineering') },
     { year: '2022', name: bilingual('Казанский федеральный университет', 'Kazan Federal University'), faculty: bilingual('Высшая школа ИТ и интеллектуальных систем · программная инженерия', 'Higher Institute of IT and Intelligent Systems · Software Engineering') }
@@ -80,23 +71,37 @@ const resume = {
 };
 const translations = {
   ru: {
-    skip: 'К содержимому', name: 'Сергей Шамов', firstName: 'Сергей', lastName: 'Шамов<span class="accent-dot">.</span>', navigation: 'Навигация', navImpact: 'Результаты', navExperience: 'Опыт', navStack: 'Стек', navContact: 'Контакты', heroCompany: 'Сбер',
-    heroStatement: 'От архитектуры<br>до сильной команды.', heroDescription: 'Проектирую распределённые backend-системы на Java, ускоряю сервисы и помогаю разработчикам расти.', talk: 'Обсудить сотрудничество', explore: 'Посмотреть опыт', location: 'Москва · удалённо', languagesShort: 'Русский / English C1', heroFootnote: 'Распределённые системы. Осмысленные решения. Люди.',
-    impactEyebrow: '01 / ИЗМЕРИМЫЙ РЕЗУЛЬТАТ', impactTitle: 'Изменения, которые работают.', impactIntro: 'Несколько примеров того, что стоит за строчками резюме. Откройте карточку, чтобы узнать контекст.', caseMore: 'Разобрать кейс', context: 'Контекст', work: 'Что сделал', result: 'Результат',
-    experienceEyebrow: '02 / ПРОФЕССИОНАЛЬНЫЙ ПУТЬ', experienceTitle: 'От кода к техническому лидерству.', experienceIntro: 'Финтех, продуктовая разработка, туризм и IoT. В разработке с 2021 года.', current: 'СЕЙЧАС', details: 'Подробнее о роли',
-    stackEyebrow: '03 / ИНЖЕНЕРНЫЙ ИНСТРУМЕНТАРИЙ', stackTitle: 'Стек под задачу.', stackIntro: 'Выберите направление. Технологии дополнены контекстом их применения.', all: 'Весь стек', stackFilter: 'Направления технологий', applied: 'ПРИМЕНЯЛ В',
-    approachEyebrow: '04 / ПОДХОД К РАБОТЕ', approachTitle: 'Хороший backend —<br>больше, чем код.', approachIntro: 'Технические решения, прозрачные процессы и рост команды — части одной работы.',
-    backgroundEyebrow: '05 / ДОПОЛНИТЕЛЬНО', backgroundTitle: 'Образование и языки.', education: 'Образование', incomplete: 'Неоконченное высшее', langTitle: 'Языки', russian: 'Русский', native: 'Родной', english: 'Английский', advanced: 'C1 · Продвинутый',
-    contactEyebrow: 'СЛЕДУЮЩИЙ ШАГ', contactTitle: 'Давайте познакомимся<span class="accent-dot">.</span>', contactDescription: 'Роли Java Team Lead, backend-разработка и интересные инженерные задачи. Предпочитаю общаться в Telegram.', share: 'Скопировать ссылку', print: 'Сохранить в PDF', copied: 'Ссылка на русскую версию скопирована', copyFailed: 'Не удалось скопировать. Скопируйте адрес из строки браузера.', printHint: 'Выберите «Сохранить как PDF» в окне печати', updated: 'Резюме · октябрь 2026', backTop: 'Наверх ↑', close: 'Закрыть', dark: 'Тёмная тема', light: 'Светлая тема', meta: 'Сергей Шамов — Java Team Lead. Распределённые системы, микросервисы и развитие инженерных команд. Опыт: Сбер, ЛАНИТ, Sophia Technologies.'
+    skip: 'К содержимому', name: 'Сергей Шамов', navigation: 'Навигация',
+    navImpact: 'Результаты', navExperience: 'Опыт', navStack: 'Стек', navContact: 'Контакты',
+    heroCompany: 'Сбер', heroDescription: 'Java backend, распределённые системы и микросервисы.',
+    explore: 'Опыт ↓', location: 'Москва · удалённо', profileSummary: 'Кратко',
+    sinceLabel: 'В разработке', sinceValue: 'с 2021 года', focusLabel: 'Специализация',
+    impactTitle: 'Результаты', caseMore: 'Подробнее', context: 'Контекст', work: 'Что сделал', result: 'Результат',
+    experienceTitle: 'Опыт работы', current: 'Сейчас', details: 'Подробнее',
+    stackTitle: 'Стек', all: 'Все', stackFilter: 'Направления технологий',
+    backgroundTitle: 'Образование и языки', education: 'Образование', incomplete: 'Неоконченное высшее',
+    langTitle: 'Языки', russian: 'Русский', native: 'Родной', english: 'Английский', advanced: 'C1 · Продвинутый',
+    contactTitle: 'Контакты', share: 'Скопировать ссылку', print: 'Сохранить в PDF',
+    copied: 'Ссылка на русскую версию скопирована', copyFailed: 'Не удалось скопировать. Скопируйте адрес из строки браузера.',
+    printHint: 'Выберите «Сохранить как PDF» в окне печати', updated: 'Октябрь 2026', backTop: 'Наверх ↑',
+    close: 'Закрыть', dark: 'Тёмная тема', light: 'Светлая тема',
+    meta: 'Сергей Шамов — Java Team Lead в Сбере. Java, Quarkus, Spring Boot, Kafka, PostgreSQL, Kubernetes.'
   },
   en: {
-    skip: 'Skip to content', name: 'Sergey Shamov', firstName: 'Sergey', lastName: 'Shamov<span class="accent-dot">.</span>', navigation: 'Navigation', navImpact: 'Impact', navExperience: 'Experience', navStack: 'Stack', navContact: 'Contact', heroCompany: 'Sber',
-    heroStatement: 'From architecture<br>to stronger teams.', heroDescription: 'I design distributed Java backend systems, improve service performance and help developers grow.', talk: 'Let’s work together', explore: 'Explore experience', location: 'Moscow · remote', languagesShort: 'Russian / English C1', heroFootnote: 'Distributed systems. Thoughtful decisions. People.',
-    impactEyebrow: '01 / MEASURABLE IMPACT', impactTitle: 'Changes that make a difference.', impactIntro: 'A few examples behind the lines on my resume. Open a card for the context.', caseMore: 'Explore the case', context: 'Context', work: 'My contribution', result: 'Outcome',
-    experienceEyebrow: '02 / THE CAREER PATH', experienceTitle: 'From code to technical leadership.', experienceIntro: 'Fintech, product development, travel and IoT. Building software since 2021.', current: 'CURRENT', details: 'More about this role',
-    stackEyebrow: '03 / ENGINEERING TOOLKIT', stackTitle: 'The right tools for the problem.', stackIntro: 'Choose a focus area. Each technology comes with the context in which I used it.', all: 'Full stack', stackFilter: 'Technology areas', applied: 'APPLIED AT',
-    approachEyebrow: '04 / HOW I WORK', approachTitle: 'A good backend is<br>more than code.', approachIntro: 'Technical decisions, clear processes and team growth are parts of the same job.',
-    backgroundEyebrow: '05 / BACKGROUND', backgroundTitle: 'Education & languages.', education: 'Education', incomplete: 'Undergraduate studies · incomplete', langTitle: 'Languages', russian: 'Russian', native: 'Native', english: 'English', advanced: 'C1 · Advanced',
-    contactEyebrow: 'THE NEXT STEP', contactTitle: 'Let’s connect<span class="accent-dot">.</span>', contactDescription: 'Java Team Lead roles, backend development and interesting engineering challenges. Telegram is my preferred way to connect.', share: 'Copy profile link', print: 'Save as PDF', copied: 'Link to the English version copied', copyFailed: 'Could not copy. Please copy the address from your browser.', printHint: 'Choose “Save as PDF” in the print dialog', updated: 'Resume · October 2026', backTop: 'Back to top ↑', close: 'Close', dark: 'Dark theme', light: 'Light theme', meta: 'Sergey Shamov — Java Team Lead. Distributed systems, microservices and engineering team development. Experience at Sber, LANIT and Sophia Technologies.'
+    skip: 'Skip to content', name: 'Sergey Shamov', navigation: 'Navigation',
+    navImpact: 'Results', navExperience: 'Experience', navStack: 'Stack', navContact: 'Contact',
+    heroCompany: 'Sber', heroDescription: 'Java backend, distributed systems and microservices.',
+    explore: 'Experience ↓', location: 'Moscow · remote', profileSummary: 'At a glance',
+    sinceLabel: 'In development', sinceValue: 'since 2021', focusLabel: 'Focus',
+    impactTitle: 'Selected results', caseMore: 'Details', context: 'Context', work: 'My contribution', result: 'Outcome',
+    experienceTitle: 'Experience', current: 'Current', details: 'Details',
+    stackTitle: 'Stack', all: 'All', stackFilter: 'Technology areas',
+    backgroundTitle: 'Education & languages', education: 'Education', incomplete: 'Undergraduate studies · incomplete',
+    langTitle: 'Languages', russian: 'Russian', native: 'Native', english: 'English', advanced: 'C1 · Advanced',
+    contactTitle: 'Contact', share: 'Copy profile link', print: 'Save as PDF',
+    copied: 'Link to the English version copied', copyFailed: 'Could not copy. Please copy the address from your browser.',
+    printHint: 'Choose “Save as PDF” in the print dialog', updated: 'October 2026', backTop: 'Back to top ↑',
+    close: 'Close', dark: 'Dark theme', light: 'Light theme',
+    meta: 'Sergey Shamov — Java Team Lead at Sber. Java, Quarkus, Spring Boot, Kafka, PostgreSQL, Kubernetes.'
   }
 };
