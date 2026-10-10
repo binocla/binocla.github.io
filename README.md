@@ -34,6 +34,8 @@ Configuration reference: [GitHub Pages publishing sources](https://docs.github.c
 - `app.js`: interactions and language switching.
 - `assets/social.png`: preview image for shared links.
 
+Asset URLs in `index.html` include content-based version keys. Refresh these when editing CSS, JavaScript or the social image to avoid stale CDN/browser assets during deployment.
+
 Career facts are based on the supplied CV, updated **8 October 2026**.
 The current Sber role has a short description until more public detail is provided.
 Metrics refer to their named projects; performance and memory figures are combined into one Sophia Technologies migration entry.
