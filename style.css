@@ -8,6 +8,7 @@
   --soft: #f0f1ee;
   --accent: #3f6256;
   --page: 960px;
+  --ambient-color: 62, 106, 84;
   color-scheme: light;
 }
 [data-theme="dark"] {
@@ -17,6 +18,7 @@
   --line: #303535;
   --soft: #222626;
   --accent: #a2bfb2;
+  --ambient-color: 138, 186, 165;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -65,7 +67,45 @@ nav a.active { color: var(--ink); }
 .language-switch button[aria-pressed="true"] { color: var(--ink); background: var(--soft); }
 .icon-button { display: grid; place-items: center; width: 28px; height: 28px; font-size: 19px; background: transparent; border-radius: 4px; }
 .icon-button:hover { background: var(--soft); }
-.hero { display: grid; grid-template-columns: 1.7fr 1fr; align-items: center; gap: 50px; padding: 54px 0; }
+.hero { position: relative; isolation: isolate; display: grid; grid-template-columns: 1.7fr 1fr; align-items: center; gap: 50px; padding: 54px 0; }
+/* A faint field behind the introduction. Only the decorative layers move. */
+.hero-ambient {
+  position: absolute;
+  inset: 14px -18px;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: 14px;
+  mask-image: radial-gradient(ellipse at center, #000 35%, transparent 75%);
+}
+.hero-ambient::before, .hero-ambient::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+.hero-ambient::before {
+  inset: -40% -20%;
+  background:
+    radial-gradient(ellipse at 28% 48%, rgba(var(--ambient-color), .075), transparent 48%),
+    radial-gradient(ellipse at 70% 55%, rgba(var(--ambient-color), .045), transparent 40%);
+  animation: ambient-drift 28s ease-in-out infinite alternate;
+}
+.hero-ambient::after {
+  inset: -24px;
+  background-image: radial-gradient(rgba(var(--ambient-color), .17) .7px, transparent .7px);
+  background-size: 24px 24px;
+  opacity: .45;
+  mask-image: radial-gradient(ellipse at 48% 48%, #000, transparent 70%);
+  animation: ambient-grain 36s ease-in-out infinite alternate;
+}
+@keyframes ambient-drift {
+  from { transform: translate3d(-18px, -6px, 0); }
+  to { transform: translate3d(32px, 12px, 0); }
+}
+@keyframes ambient-grain {
+  from { transform: translate3d(-4px, 0, 0); }
+  to { transform: translate3d(8px, -6px, 0); }
+}
 .hero h1 { font-size: 40px; line-height: 1.2; letter-spacing: -1.5px; font-weight: 500; }
 .hero-role { margin-top: 11px; color: var(--ink); font-size: 16px; }
 .hero-description { font-size: 13px; margin-top: 16px; max-width: 380px; }
@@ -139,7 +179,7 @@ details[open] summary span { transform: rotate(45deg); }
 .share-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
 .share-actions button { background: transparent; padding: 0; font-size: 11px; color: var(--muted); }
 .share-actions button:hover { color: var(--accent); }
-.site-footer { display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid var(--line); padding: 20px 0 28px; font-size: 10px; color: var(--muted); }
+.site-footer { display: flex; justify-content: flex-end; gap: 16px; border-top: 1px solid var(--line); padding: 20px 0 28px; font-size: 10px; color: var(--muted); }
 dialog { padding: 35px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); color: var(--ink); width: min(580px, calc(100% - 32px)); max-height: 85dvh; overscroll-behavior: contain; }
 dialog::backdrop { background: #0007; }
 .dialog-close { position: absolute; top: 12px; right: 12px; font-size: 24px; }
@@ -212,7 +252,6 @@ dialog section p { font-size: 12px; line-height: 1.8; }
   .share-actions { flex-direction: row; flex-wrap: wrap; gap: 20px; }
   .share-actions button { font-size: 10px; }
   .site-footer { flex-wrap: wrap; font-size: 9px; gap: 10px; }
-  .site-footer > span:nth-child(2) { order: 3; width: 100%; }
   dialog { padding: 32px 23px; }
   .dialog-metric { font-size: 24px; }
   dialog h2 { font-size: 20px; }
@@ -231,7 +270,7 @@ dialog section p { font-size: 12px; line-height: 1.8; }
   }
   body { font-size: 9pt; background: #fff; }
   .site-header, main, .site-footer { width: 100%; max-width: none; }
-  .site-header { display: none; }
+  .site-header, .hero-ambient { display: none; }
   .hero { padding: 0 0 20px; grid-template-columns: 1.6fr 1fr; gap: 30px; }
   .hero h1 { font-size: 25pt; letter-spacing: -.6px; }
   .hero-role { font-size: 11pt; }

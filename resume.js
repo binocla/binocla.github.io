@@ -83,7 +83,7 @@ const translations = {
     langTitle: 'Языки', russian: 'Русский', native: 'Родной', english: 'Английский', advanced: 'C1 · Продвинутый',
     contactTitle: 'Контакты', share: 'Скопировать ссылку', print: 'Сохранить в PDF',
     copied: 'Ссылка на русскую версию скопирована', copyFailed: 'Не удалось скопировать. Скопируйте адрес из строки браузера.',
-    printHint: 'Выберите «Сохранить как PDF» в окне печати', updated: 'Октябрь 2026', backTop: 'Наверх ↑',
+    printHint: 'Выберите «Сохранить как PDF» в окне печати', backTop: 'Наверх ↑',
     close: 'Закрыть', dark: 'Тёмная тема', light: 'Светлая тема',
     meta: 'Сергей Шамов — Java Team Lead в Сбере. Java, Quarkus, Spring Boot, Kafka, PostgreSQL, Kubernetes.'
   },
@@ -100,7 +100,7 @@ const translations = {
     langTitle: 'Languages', russian: 'Russian', native: 'Native', english: 'English', advanced: 'C1 · Advanced',
     contactTitle: 'Contact', share: 'Copy profile link', print: 'Save as PDF',
     copied: 'Link to the English version copied', copyFailed: 'Could not copy. Please copy the address from your browser.',
-    printHint: 'Choose “Save as PDF” in the print dialog', updated: 'October 2026', backTop: 'Back to top ↑',
+    printHint: 'Choose “Save as PDF” in the print dialog', backTop: 'Back to top ↑',
     close: 'Close', dark: 'Dark theme', light: 'Light theme',
     meta: 'Sergey Shamov — Java Team Lead at Sber. Java, Quarkus, Spring Boot, Kafka, PostgreSQL, Kubernetes.'
   }
